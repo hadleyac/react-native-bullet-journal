@@ -77,14 +77,27 @@ export default class App extends Component {
 
   saveNote(note) {
     //add a new note with the current noteID
-    console.log('saving note')
     this.setState({
       notes: {
         ...this.state.notes, 
         [this.state.noteID] : note
       }   
-    }, ()=>this.setState({nodeID: this.state.noteID+1})) //then after we've added the note, increment nodeID for next time
+    }, ()=>{
+      //add the noteID to the current page's notes array
+      const { noteID, pages, currentPage } = this.state;
+      const newPages = [...pages];
+      const newPage = {...newPages[currentPage]};
+      newPage.notes = [...newPage.notes, noteID];
+      newPages[currentPage] = newPage;
+      this.setState({ 
+        pages: newPages
+      }, ()=> {
+        //increment noteID
+        this.setState({
+          noteID: noteID+1
+      })} )}) 
   }
+
 
   render() {
     return (
