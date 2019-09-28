@@ -20,17 +20,15 @@ icons: https://material.io/resources/icons/?style=baseline
 */
 
 
-import React, { useState, Component } from 'react';
+import React, { Component } from 'react';
 import { 
   StyleSheet,
   SafeAreaView, 
   Text, 
-  // TextInput, 
   View, 
-  // Button 
 } from 'react-native';
 import Constants from 'expo-constants';
-import { Button, TextInput, List, Provider as PaperProvider } from 'react-native-paper';
+import {Provider as PaperProvider } from 'react-native-paper';
 const shortid = require('shortid')
 
 import Page from './components/Page'
