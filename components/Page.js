@@ -9,7 +9,7 @@ import AddNoteModal from './AddNoteModal';
 
 const shortid = require('shortid')
 
-function Page({ page, notes, onPressTaskRadioButton, saveNote}) {
+function Page({ page, notes, onPressTaskRadioButton, saveNote, deleteNote}) {
 
   //controls for dialog box
   const [isDialogVisible, setDialog] = useState(false);
@@ -34,6 +34,8 @@ function Page({ page, notes, onPressTaskRadioButton, saveNote}) {
             return <Note 
               note={note}
               key={shortid.generate()}
+              noteID={noteID}
+              deleteNote={deleteNote}
               />
             } 
             
@@ -43,6 +45,7 @@ function Page({ page, notes, onPressTaskRadioButton, saveNote}) {
                 onPressTaskRadioButton={onPressTaskRadioButton}
                 noteID={noteID}
                 key={shortid.generate()}
+                deleteNote={deleteNote}
                 />
               }
                

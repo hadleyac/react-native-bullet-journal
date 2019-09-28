@@ -126,6 +126,16 @@ function AddNoteModal({isDialogVisible, hideDialog, noteType, saveNote}) {
               value={contentText}
               onChangeText={text => setContentText(text)}
               />
+          <Text>Important</Text> 
+          <Switch
+            value={important}
+            onValueChange={toggleImportant}
+          />
+          <Text>Inspiration</Text>
+          <Switch
+            value={inspiration}
+            onValueChange={toggleInspiration}
+          />                 
           </Dialog.Content>
           <Dialog.Actions>
             <Button 

@@ -14,7 +14,7 @@ TODO
   
 Functionality
 [x] save notes to local storage
-[] delete notes
+[x] delete notes
 [] edit notes
 [] drag and drop note positions
 [] pagination. With the date at the top of each page.
@@ -22,6 +22,7 @@ Functionality
 [] add time note was created
 [] edit note
 [] consolidate rendering for AddNoteModal
+[] cleanup deleteNote method
 
 
 
@@ -85,6 +86,7 @@ export default class App extends Component {
     }
     this.onPressTaskRadioButton = this.onPressTaskRadioButton.bind(this);
     this.saveNote = this.saveNote.bind(this);
+    this.deleteNote = this.deleteNote.bind(this);
   }
 
   onPressTaskRadioButton(id) {
@@ -125,8 +127,26 @@ export default class App extends Component {
       }, ()=>{this.saveState()})} )}) 
   }
 
+  //TODO: cleanup this method
+  deleteNote(id) {
+    const {currentPage} = this.state;
+
+    const newState = {...this.state};
+    const newPages = [...newState.pages]
+    const newPage = newPages[currentPage]
+    const targetIndex = newPage.notes.indexOf(id)
+    newPage.notes.splice(targetIndex, 1)
+
+    const newNotes = {...newState.notes}
+    delete newNotes[id];
+
+    newState.pages = newPages;
+    newState.notes = newNotes
+    this.setState(newState)
+    console.log('trying to delete the note')
+  }
+
   componentDidMount(){
-    console.log('mounted')
     this.getState()
   
   }
@@ -171,6 +191,7 @@ export default class App extends Component {
           key={shortid.generate()}
           onPressTaskRadioButton={this.onPressTaskRadioButton}
           saveNote={this.saveNote}
+          deleteNote={this.deleteNote}
           />)}
         </View>
       </PaperProvider>
