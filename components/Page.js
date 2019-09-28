@@ -1,5 +1,5 @@
 import React, {useState} from 'react'
-import {} from 'react-native';
+import {KeyboardAvoidingView} from 'react-native';
 import {List} from 'react-native-paper';
 
 import Note from './Note';
@@ -32,21 +32,20 @@ function Page({ page, notes, onPressTaskRadioButton, saveNote}) {
           
           if (note.type === 'note') {
             return <Note 
-              content={note.content}
+              note={note}
               key={shortid.generate()}
               />
             } 
             
             else if (note.type === 'task') {
               return <Task 
-                content={note.content}
-                complete={note.complete}
+                note={note}
                 onPressTaskRadioButton={onPressTaskRadioButton}
                 noteID={noteID}
                 key={shortid.generate()}
                 />
               }
-              
+               
             })}
             {/* </List> */}
       </List.Section>
@@ -54,12 +53,12 @@ function Page({ page, notes, onPressTaskRadioButton, saveNote}) {
         addNote={addNote} 
         addTask={addTask}
       />
-      <AddNoteModal 
-        isDialogVisible={isDialogVisible} 
-        hideDialog={hideDialog}
-        noteType={noteType}
-        saveNote={saveNote}
-      />
+        <AddNoteModal 
+          isDialogVisible={isDialogVisible} 
+          hideDialog={hideDialog}
+          noteType={noteType}
+          saveNote={saveNote}
+        />
     </>
       
 

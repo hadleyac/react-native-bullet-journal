@@ -10,10 +10,11 @@ import {
 } from 'react-native';
 
 
-function Task({noteID, content, complete, onPressTaskRadioButton}) {
+function Task({noteID, note, onPressTaskRadioButton}) {
+  const { complete, content, important, inspiration } = note;
   return (
     <List.Item 
-    title={content}
+    title={content + ' ' + important + ' ' + inspiration}
     titleStyle={complete ? styles.complete: styles.none}
     left={props => <RadioButton.Android 
       value="ur mum"

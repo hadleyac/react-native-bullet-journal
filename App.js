@@ -7,13 +7,29 @@ TODO
 [] fix icons for notes and task components
 [x]floating action button that gives user choice of journal entries
   [x]todo
-  [x]note
+  [x]note  
+[x] textInput in modal is focused by default
+[x] modal respects keyboard location
+  [] fix ongoing connection reset error in expo
+  
+Functionality
+[] save notes to local storage
+[] delete notes
+[] edit notes
+[] drag and drop note positions
 [] pagination. With the date at the top of each page.
 [] menu to add a new page. Date is defaulted at today, but you can pick them
+[] add time note was created
+[] edit note
 
-[] textInput in modal is focused by default
-[] modal respects keyboard location
+
+
+Styling
+[] render icon for important and inspiration
+[] Fix styling for important and inspiration toggles
 [] page should be scrollable
+[] if note names are too long, they should wrap to the next line
+
 
 swipable tabs: https://github.com/react-native-community/react-native-tab-view
 icons: https://material.io/resources/icons/?style=baseline
@@ -46,14 +62,19 @@ export default class App extends Component {
         //this is an example of a note
         0: {
           type: 'note',
-          content: 'this is a note'
+          content: 'this is a note',
+          important : true,
+          inspiration : false
+
           
         },
         //this is an example of a task. There will be more "note" types in the future. 
         1: {
           type: 'task',
           content: 'this is a task',
-          complete: false
+          complete: false,
+          important : false,
+          inspiration : true
         }
       },
       noteID: 2
