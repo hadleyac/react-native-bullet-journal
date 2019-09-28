@@ -2,14 +2,18 @@
 TODO
 [x] stub outline of what my data will look like
 [x] make Page component
-[] make note component
-[] make task component
+[x] make note component
+[x] make task component
 [] fix icons for notes and task components
-[]floating action button that gives user choice of journal entries
-  []todo
-  []note
+[x]floating action button that gives user choice of journal entries
+  [x]todo
+  [x]note
 [] pagination. With the date at the top of each page.
 [] menu to add a new page. Date is defaulted at today, but you can pick them
+
+[] textInput in modal is focused by default
+[] modal respects keyboard location
+[] page should be scrollable
 
 swipable tabs: https://github.com/react-native-community/react-native-tab-view
 icons: https://material.io/resources/icons/?style=baseline
