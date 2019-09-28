@@ -42,10 +42,12 @@ import {
   SafeAreaView, 
   Text, 
   View, 
+  AsyncStorage
 } from 'react-native';
 import Constants from 'expo-constants';
 import {Provider as PaperProvider } from 'react-native-paper';
 const shortid = require('shortid')
+// import AsyncStorage from '@react-native-community/async-storage';
 
 import Page from './components/Page'
 
@@ -118,7 +120,39 @@ export default class App extends Component {
         //increment noteID
         this.setState({
           noteID: noteID+1
-      })} )}) 
+      }, ()=>{this.saveLocalState()})} )}) 
+  }
+
+  async saveLocalState () {
+    try {
+      await AsyncStorage.setItem('appState', JSON.stringify(this.state));
+    } catch (error) {
+      console.log('error saving data')
+    }
+    console.log('state is now: ', this.state)
+  }
+
+  async retrieveData () {
+    console.log('trying to get data')
+    try {
+      const previousState = await AsyncStorage.getItem('appState');
+      if (previousState !== null) {
+        // We have data!!
+        console.log('we have data')
+        console.log(previousState);
+        this.setState(JSON.parse(previousState),()=>console.log('retreived previous state'))
+      }
+    } catch (error) {
+      console.log('error getting data', error)
+      // Error retrieving data
+    }
+  }
+
+
+  componentDidMount(){
+    console.log('mounted')
+    this.retrieveData()
+    this.saveLocalState()
   }
 
 
