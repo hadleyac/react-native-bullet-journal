@@ -54,10 +54,11 @@ export default class App extends Component {
           complete: false
         }
       },
-      noteID: 0
+      noteID: 2
 
     }
     this.onPressTaskRadioButton = this.onPressTaskRadioButton.bind(this);
+    this.onPressAddNoteButton = this.onPressAddNoteButton.bind(this);
   }
 
   onPressTaskRadioButton(id) {
@@ -74,6 +75,16 @@ export default class App extends Component {
     this.setState(newState)
   }
 
+  onPressAddNoteButton(note) {
+    //add a new note with the current noteID
+    this.setState({
+      notes: {
+        ...this.state.notes, 
+        [this.state.noteID] : note
+      }   
+    }, ()=>this.setState({nodeID: this.state.noteID+1})) //then after we've added the note, increment nodeID for next time
+  }
+
   render() {
     return (
       <PaperProvider>
@@ -83,6 +94,7 @@ export default class App extends Component {
           notes={this.state.notes} 
           key={shortid.generate()}
           onPressTaskRadioButton={this.onPressTaskRadioButton}
+          onPressAddNoteButton={this.onPressAddNoteButton}
           />)}
         </View>
       </PaperProvider>

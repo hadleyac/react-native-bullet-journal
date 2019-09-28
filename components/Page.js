@@ -9,7 +9,7 @@ import AddNoteModal from './AddNoteModal';
 
 const shortid = require('shortid')
 
-function Page({ page, notes, onPressTaskRadioButton}) {
+function Page({ page, notes, onPressTaskRadioButton, onPressAddNoteButton}) {
 
   //controls for dialog box
   const [isDialogVisible, setDialog] = useState(false);
@@ -58,6 +58,7 @@ function Page({ page, notes, onPressTaskRadioButton}) {
         isDialogVisible={isDialogVisible} 
         hideDialog={hideDialog}
         noteType={noteType}
+        onPressAddNoteButton={onPressAddNoteButton}
       />
     </>
       
