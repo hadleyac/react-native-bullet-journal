@@ -1,13 +1,13 @@
 import React, { useState, useEffect, useRef } from 'react'
-import { Button, Dialog, Paragraph, Portal, TextInput} from 'react-native-paper';
-import {KeyboardAvoidingView} from 'react-native';
+import { Button, Dialog, Paragraph, Portal, Modal, TextInput} from 'react-native-paper';
+import { Keyboard, KeyboardAvoidingView, StyleSheet, View, Platform} from 'react-native';
 
 function AddNoteModal({isDialogVisible, hideDialog, noteType, saveNote}) {
 
   let textInputRef = useRef(null)
-  // let textInputRef = null;
 
   const [contentText, setContentText] = useState('');
+  // const [keyboardHeightOffset, setKeyboardHeightOffset] = useState(0)
 
   const onPressAddNoteButton = () => {
     hideDialog();
@@ -35,6 +35,10 @@ function AddNoteModal({isDialogVisible, hideDialog, noteType, saveNote}) {
     }
   }
 
+  // const keyboardDidShow = (e) => {
+  //   setKeyboardHeightOffset(e.endCoordinates.height-100)
+  // }
+
  
   useEffect(()=>{
      //Will focus the textInput box if the modal is visible
@@ -43,35 +47,41 @@ function AddNoteModal({isDialogVisible, hideDialog, noteType, saveNote}) {
         textInputRef.current.focus()
       }, 300);
     }
+
+    // keyBoardDidShowListener = Keyboard.addListener('keyboardDidShow', keyboardDidShow)
   },[isDialogVisible])
 
 
   if (noteType === 'note') {
     return (
-      <KeyboardAvoidingView behavior='padding'>
-        <Portal>
-          <Dialog
-            visible={isDialogVisible}
-            onDismiss={hideDialog}>
-            <Dialog.Title>Alert</Dialog.Title>
-            <Dialog.Content>
-              <Paragraph>This will be a note</Paragraph>
-              <TextInput 
-                ref={textInputRef}
-                label='type your note'
-                value={contentText}
-                onChangeText={text => setContentText(text)}
-                />
-            </Dialog.Content>
-            <Dialog.Actions>
-              <Button 
-              onPress={onPressAddNoteButton}
-              >
-                Done</Button>
-            </Dialog.Actions>
-          </Dialog>
-        </Portal>
-      </KeyboardAvoidingView>
+      
+      <Portal>
+        <Dialog
+          visible={isDialogVisible}
+          onDismiss={hideDialog}
+          style={{top: -100}}
+          >
+                  {/* <View style={styles.container}> */}
+          <Dialog.Title>New Note</Dialog.Title>
+          <Dialog.Content avoidKeyboard>
+            <TextInput 
+              ref={textInputRef}
+              label='type your note'
+              mode='outlined'
+              value={contentText}
+              onChangeText={text => setContentText(text)}
+              />
+          </Dialog.Content>
+          <Dialog.Actions>
+            <Button 
+            onPress={onPressAddNoteButton}
+            >
+              Done
+            </Button>
+          </Dialog.Actions>
+  {/* </View> */}
+        </Dialog>
+      </Portal>
     )
   } 
 
@@ -80,7 +90,8 @@ function AddNoteModal({isDialogVisible, hideDialog, noteType, saveNote}) {
       <Portal>
       <Dialog
          visible={isDialogVisible}
-         onDismiss={hideDialog}>
+         onDismiss={hideDialog}
+        >
         <Dialog.Title>Alert</Dialog.Title>
         <Dialog.Content>
           <Paragraph>This will be a task</Paragraph>
@@ -95,6 +106,10 @@ function AddNoteModal({isDialogVisible, hideDialog, noteType, saveNote}) {
 
 }
 
+const styles = StyleSheet.create({
+  container: {
+  }
+})
 
 
 export default AddNoteModal
