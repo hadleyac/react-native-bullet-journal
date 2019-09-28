@@ -4,7 +4,6 @@ import {
   Button, 
   Checkbox, 
   RadioButton,
-  FAB
  } from 'react-native-paper';
 import { 
   StyleSheet

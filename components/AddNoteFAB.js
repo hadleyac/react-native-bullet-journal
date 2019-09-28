@@ -4,7 +4,7 @@ import {
   StyleSheet
 } from 'react-native';
 
-function AddNote() {
+function AddNote( {addNote, addTask} ) {
   const [isOpen, toggleOpen] = useState(false)
 
   return (
@@ -14,8 +14,8 @@ function AddNote() {
           open={isOpen}
           icon={isOpen ? 'today' : 'add'}
           actions={[
-            { icon: 'email', label: 'Email', onPress: () => console.log('Pressed email') },
-            { icon: 'note-add', label: 'Reminder', onPress: () => console.log('Pressed notifications') },
+            { icon: 'check-circle', label: 'Task', onPress: addTask},
+            { icon: 'subject', label: 'Note', onPress: addNote},
           ]}
           onStateChange={({ open }) => toggleOpen(!isOpen)}
           onPress={() => {
@@ -27,11 +27,6 @@ function AddNote() {
 
       </Portal>
      </Provider>
-  //   <FAB
-  //   style={styles.fab}
-  //   icon="add"
-  //   onPress={() => console.log('Pressed')}
-  // />
   )
 }
 

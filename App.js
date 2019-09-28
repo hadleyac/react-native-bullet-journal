@@ -11,6 +11,8 @@ TODO
 [] pagination. With the date at the top of each page.
 [] menu to add a new page. Date is defaulted at today, but you can pick them
 
+swipable tabs: https://github.com/react-native-community/react-native-tab-view
+icons: https://material.io/resources/icons/?style=baseline
 */
 
 
@@ -24,7 +26,7 @@ import {
   // Button 
 } from 'react-native';
 import Constants from 'expo-constants';
-import { Button, TextInput, List } from 'react-native-paper';
+import { Button, TextInput, List, Provider as PaperProvider } from 'react-native-paper';
 const shortid = require('shortid')
 
 import Page from './components/Page'
@@ -74,15 +76,16 @@ export default class App extends Component {
 
   render() {
     return (
-      <View style={styles.container}> 
-      <Text>This is my fantastic app</Text>
-      {this.state.pages.map( (page, index) => <Page 
-        page={page} 
-        notes={this.state.notes} 
-        key={shortid.generate()}
-        onPressTaskRadioButton={this.onPressTaskRadioButton}
-        />)}
-    </View>
+      <PaperProvider>
+        <View style={styles.container}> 
+        {this.state.pages.map( (page, index) => <Page 
+          page={page} 
+          notes={this.state.notes} 
+          key={shortid.generate()}
+          onPressTaskRadioButton={this.onPressTaskRadioButton}
+          />)}
+        </View>
+      </PaperProvider>
     )
   }
 }
