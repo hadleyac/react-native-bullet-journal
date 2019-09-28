@@ -58,7 +58,7 @@ export default class App extends Component {
 
     }
     this.onPressTaskRadioButton = this.onPressTaskRadioButton.bind(this);
-    this.onPressAddNoteButton = this.onPressAddNoteButton.bind(this);
+    this.saveNote = this.saveNote.bind(this);
   }
 
   onPressTaskRadioButton(id) {
@@ -75,8 +75,9 @@ export default class App extends Component {
     this.setState(newState)
   }
 
-  onPressAddNoteButton(note) {
+  saveNote(note) {
     //add a new note with the current noteID
+    console.log('saving note')
     this.setState({
       notes: {
         ...this.state.notes, 
@@ -94,7 +95,7 @@ export default class App extends Component {
           notes={this.state.notes} 
           key={shortid.generate()}
           onPressTaskRadioButton={this.onPressTaskRadioButton}
-          onPressAddNoteButton={this.onPressAddNoteButton}
+          saveNote={this.saveNote}
           />)}
         </View>
       </PaperProvider>
