@@ -13,7 +13,7 @@ TODO
   [] fix ongoing connection reset error in expo
   
 Functionality
-[] save notes to local storage
+[x] save notes to local storage
 [] delete notes
 [] edit notes
 [] drag and drop note positions
@@ -21,6 +21,7 @@ Functionality
 [] menu to add a new page. Date is defaulted at today, but you can pick them
 [] add time note was created
 [] edit note
+[] consolidate rendering for AddNoteModal
 
 
 
@@ -97,7 +98,7 @@ export default class App extends Component {
         }
       }
     }
-    this.setState(newState)
+    this.setState(newState, ()=>{this.saveState()})
   }
 
   saveNote(note) {
@@ -135,7 +136,7 @@ export default class App extends Component {
     try {
       await AsyncStorage.setItem(key, JSON.stringify(data));
     } catch (error) {
-      console.log('error saving data')
+      console.log('error saving data', error)
     }
   }
 
@@ -143,7 +144,6 @@ export default class App extends Component {
     try {
       const value = await AsyncStorage.getItem(key);
       if (value !== null) {
-        console.log('we have data')
         return JSON.parse(value)
       }
     } catch (error) {
