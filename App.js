@@ -92,17 +92,7 @@ export default class App extends Component {
   }
 
   onPressTaskRadioButton(id) {
-    // this.setState({
-    //   notes: {
-    //     ...this.state.notes,
-    //     [id] : {
-    //       ...this.state.notes[id],
-    //       complete: !this.state.notes[id].complete
-    //     }
-    //   }
-    // })
-    const newState = {
-      ...this.state,
+    this.setState({
       notes: {
         ...this.state.notes,
         [id] : {
@@ -110,8 +100,7 @@ export default class App extends Component {
           complete: !this.state.notes[id].complete
         }
       }
-    }
-    this.setState(newState, ()=>{this.saveState()})
+    }, () => this.saveState())
   }
 
   saveNote(note) {
