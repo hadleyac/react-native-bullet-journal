@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Text, TouchableOpacity } from 'react-native';
+import { Text, TouchableOpacity, Vibration } from 'react-native';
 // import {} from 'react-native-paper';
 import DraggableFlatList from 'react-native-draggable-flatlist'
 
@@ -27,8 +27,9 @@ function Page({ page, notes, onPressTaskRadioButton, saveNote, deleteNote, onMov
     if (note.type === 'note') {
       return (
         <TouchableOpacity
-          onLongPress={move}
+        onLongPress={()=>{Vibration.vibrate(20); move()}}
           onPressOut={moveEnd}
+          // style={{backgroundColor: isActive ? 'blue' : noteID.backgroundColor,}}
         >
           <Note
             note={note}
@@ -42,7 +43,7 @@ function Page({ page, notes, onPressTaskRadioButton, saveNote, deleteNote, onMov
     else if (note.type === 'task') {
       return (
         <TouchableOpacity
-          onLongPress={move}
+          onLongPress={()=>{Vibration.vibrate(20); move()}}
           onPressOut={moveEnd}
         >
           <Task

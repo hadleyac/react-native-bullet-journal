@@ -28,6 +28,7 @@ Functionality
 [] edit note
 [] consolidate rendering for AddNoteModal
 [] cleanup deleteNote method
+[] Check if I need to add vibration permissions to android manifest.xml
 
 
 
