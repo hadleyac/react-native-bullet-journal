@@ -92,8 +92,6 @@ export default class App extends Component {
   }
 
   onPressTaskRadioButton(id) {
-    console.log(id)
-    console.log('pressed radio button')
     // this.setState({
     //   notes: {
     //     ...this.state.notes,
@@ -156,7 +154,6 @@ export default class App extends Component {
     newState.pages = newPages;
     newState.notes = newNotes
     this.setState(newState)
-    console.log('trying to delete the note')
   }
 
   componentDidMount(){

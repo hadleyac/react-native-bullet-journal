@@ -26,7 +26,6 @@ function Page({ page, notes, onPressTaskRadioButton, saveNote, deleteNote }) {
       <FlatList
         data={page.notes}
         renderItem={({ item: noteID, index }) => {
-          console.log(noteID)
           let note = notes[noteID]
 
           if (note.type === 'note') {
