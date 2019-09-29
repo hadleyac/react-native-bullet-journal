@@ -15,8 +15,9 @@ TODO
 Functionality
 [x] save notes to local storage
 [x] delete notes
-[] scrollView should not reset after checking of an item (minimize re-renders?)
+[x] scrollView should not reset after checking of an item (minimize re-renders?)
   [x] changed to FlatList
+  [x] fixed by passing notes data throught the extraData prop
 [] edit notes
 [] drag and drop note positions
 [] pagination. With the date at the top of each page.
@@ -43,8 +44,6 @@ icons: https://material.io/resources/icons/?style=baseline
 import React, { Component } from 'react';
 import { 
   StyleSheet,
-  SafeAreaView, 
-  Text, 
   View, 
   AsyncStorage
 } from 'react-native';
@@ -84,11 +83,20 @@ export default class App extends Component {
       noteID: 2
 
     }
+    this.onMoveEnd = this.onMoveEnd.bind(this);
     this.onPressTaskRadioButton = this.onPressTaskRadioButton.bind(this);
     this.saveNote = this.saveNote.bind(this);
     this.deleteNote = this.deleteNote.bind(this);
   }
 
+  onMoveEnd(newPageNoteOrder) {
+    const newPages = {...this.state.pages}
+    const newPage = newPages[this.state.currentPage]
+    newPage.notes = newPageNoteOrder;
+    this.setState({
+      pages: newPages
+    }, ()=> this.saveState())
+  }
   onPressTaskRadioButton(id) {
     this.setState({
       notes: {
@@ -188,6 +196,7 @@ export default class App extends Component {
           onPressTaskRadioButton={this.onPressTaskRadioButton}
           saveNote={this.saveNote}
           deleteNote={this.deleteNote}
+          onMoveEnd={this.onMoveEnd}
           />
         </View>
       </PaperProvider>
