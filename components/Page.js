@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { ScrollView } from 'react-native';
+import { ScrollView, FlatList, Text } from 'react-native';
 import { List } from 'react-native-paper';
 
 import Note from './Note';
@@ -23,36 +23,35 @@ function Page({ page, notes, onPressTaskRadioButton, saveNote, deleteNote }) {
 
   return (
     <>
-      <ScrollView>
-        <List.Section>
-          <List.Subheader>{page.title}</List.Subheader>
-          {/* <List> */}
-          {page.notes.map((noteID, index) => {
-            let note = notes[noteID]
+      <FlatList
+        data={page.notes}
+        renderItem={({ item: noteID }) => {
+          let note = notes[noteID]
 
-            if (note.type === 'note') {
-              return <Note
-                note={note}
-                key={shortid.generate()}
-                noteID={noteID}
-                deleteNote={deleteNote}
-              />
-            }
+          if (note.type === 'note') {
+            return <Note
+              note={note}
+              key={shortid.generate()}
+              noteID={noteID}
+              deleteNote={deleteNote}
+            />
+          }
 
-            else if (note.type === 'task') {
-              return <Task
-                note={note}
-                onPressTaskRadioButton={onPressTaskRadioButton}
-                noteID={noteID}
-                key={shortid.generate()}
-                deleteNote={deleteNote}
-              />
-            }
+          else if (note.type === 'task') {
+            return <Task
+              note={note}
+              onPressTaskRadioButton={onPressTaskRadioButton}
+              noteID={noteID}
+              key={shortid.generate()}
+              deleteNote={deleteNote}
+            />
+          }
 
-          })}
-          {/* </List> */}
-        </List.Section>
-      </ScrollView>
+        }}
+        keyExtractor={() => shortid.generate()}
+      >
+
+      </FlatList>
       <AddNoteFAB
         addNote={addNote}
         addTask={addTask}
