@@ -13,7 +13,6 @@ function AddNoteModal({isDialogVisible, hideDialog, noteType, saveNote}) {
   const [inspiration, setInspiration] = useState(false);
   const toggleImportant = () => {setImportant(!important)};
   const toggleInspiration = () => {setInspiration(!inspiration)};
-  // const [keyboardHeightOffset, setKeyboardHeightOffset] = useState(0)
 
   const onPressAddNoteButton = () => {
     hideDialog();
@@ -52,11 +51,6 @@ function AddNoteModal({isDialogVisible, hideDialog, noteType, saveNote}) {
     setInspiration(false);
   }
 
-  // const keyboardDidShow = (e) => {
-  //   setKeyboardHeightOffset(e.endCoordinates.height-100)
-  // }
-
- 
   useEffect(()=>{
      //Will focus the textInput box if the modal is visible
     if (isDialogVisible) {
@@ -64,8 +58,6 @@ function AddNoteModal({isDialogVisible, hideDialog, noteType, saveNote}) {
         textInputRef.current.focus()
       }, 300);
     }
-
-    // keyBoardDidShowListener = Keyboard.addListener('keyboardDidShow', keyboardDidShow)
   },[isDialogVisible])
 
 
