@@ -7,8 +7,6 @@ import Task from './Task';
 import AddNoteFAB from './AddNoteFAB'
 import AddNoteModal from './AddNoteModal';
 
-const shortid = require('shortid')
-
 function Page({ page, notes, onPressTaskRadioButton, saveNote, deleteNote }) {
 
   //controls for dialog box
@@ -25,7 +23,7 @@ function Page({ page, notes, onPressTaskRadioButton, saveNote, deleteNote }) {
     <>
       <FlatList
         data={page.notes}
-        renderItem={({ item: noteID, index }) => {
+        renderItem={({ item: noteID}) => {
           let note = notes[noteID]
 
           if (note.type === 'note') {

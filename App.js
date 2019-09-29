@@ -50,8 +50,6 @@ import {
 } from 'react-native';
 import Constants from 'expo-constants';
 import {Provider as PaperProvider } from 'react-native-paper';
-const shortid = require('shortid')
-// import AsyncStorage from '@react-native-community/async-storage';
 
 import Page from './components/Page'
 
@@ -184,18 +182,9 @@ export default class App extends Component {
     return (
       <PaperProvider>
         <View style={styles.container}> 
-        {/* {this.state.pages.map( (page, index) => <Page 
-          page={page} 
-          notes={this.state.notes} 
-          key={shortid.generate()}
-          onPressTaskRadioButton={this.onPressTaskRadioButton}
-          saveNote={this.saveNote}
-          deleteNote={this.deleteNote}
-          />)} */}
           <Page 
           page={this.state.pages[0]} 
           notes={this.state.notes} 
-          // key={shortid.generate()}
           onPressTaskRadioButton={this.onPressTaskRadioButton}
           saveNote={this.saveNote}
           deleteNote={this.deleteNote}
