@@ -1,29 +1,29 @@
 import React, { useState } from 'react';
 import { FAB, Portal, Provider } from 'react-native-paper';
-import { 
+import {
   StyleSheet
 } from 'react-native';
 
-function AddNote( {addNote, addTask} ) {
+function AddNote({ addNote, addTask }) {
   const [isOpen, toggleOpen] = useState(false)
 
   return (
-      <Portal>
-        <FAB.Group
-          open={isOpen}
-          icon={isOpen ? 'today' : 'add'}
-          actions={[
-            { icon: 'check-circle', label: 'Task', onPress: addTask},
-            { icon: 'subject', label: 'Note', onPress: addNote},
-          ]}
-          onStateChange={({ open }) => toggleOpen(!isOpen)}
-          onPress={() => {
-            if (isOpen) {
-              console.log('the fab group is open')
-            }
-          }}
-        />
-      </Portal>
+    <Portal>
+      <FAB.Group
+        open={isOpen}
+        icon={isOpen ? 'today' : 'add'}
+        actions={[
+          { icon: 'check-circle', label: 'Task', onPress: addTask },
+          { icon: 'subject', label: 'Note', onPress: addNote },
+        ]}
+        onStateChange={({ open }) => toggleOpen(!isOpen)}
+        onPress={() => {
+          if (isOpen) {
+            console.log('the fab group is open')
+          }
+        }}
+      />
+    </Portal>
   )
 }
 

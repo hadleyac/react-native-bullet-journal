@@ -30,6 +30,7 @@ Functionality
 [] cleanup deleteNote method
 [] Check if I need to add vibration permissions to android manifest.xml
 [] swip list items for more options
+[] Add firebase back end
 
 
 
@@ -52,7 +53,7 @@ import {
   AsyncStorage
 } from 'react-native';
 import Constants from 'expo-constants';
-import { Provider as PaperProvider } from 'react-native-paper';
+import { DefaultTheme, Provider as PaperProvider } from 'react-native-paper';
 
 import Page from './components/Page'
 
@@ -91,6 +92,16 @@ export default class App extends Component {
     this.onPressTaskRadioButton = this.onPressTaskRadioButton.bind(this);
     this.saveNote = this.saveNote.bind(this);
     this.deleteNote = this.deleteNote.bind(this);
+
+    this.theme = {
+      ...DefaultTheme,
+      // roundness: 10,
+      colors: {
+        ...DefaultTheme.colors,
+        primary: '#f50057',
+        accent: '#f50057',
+      }
+    };
   }
 
   onMoveEnd(newPageNoteOrder) {
@@ -193,7 +204,7 @@ export default class App extends Component {
 
   render() {
     return (
-      <PaperProvider>
+      <PaperProvider theme={this.theme}>
         <View style={styles.container}>
           <Page
             page={this.state.pages[0]}
