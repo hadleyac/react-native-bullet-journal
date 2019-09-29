@@ -26,6 +26,11 @@
     "ios": {
       "supportsTablet": true
     },
+    "android": {
+      "permissions": [
+        "VIBRATE"
+      ]
+    },
     "description": "Work in process. Simple bullet journal application. ",
     "githubUrl": "https://github.com/hadleyac/react-native-bullet-journal"
   }
