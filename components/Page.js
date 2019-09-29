@@ -27,9 +27,9 @@ function Page({ page, notes, onPressTaskRadioButton, saveNote, deleteNote, onMov
     if (note.type === 'note') {
       return (
         <TouchableOpacity
-        onLongPress={()=>{Vibration.vibrate(20); move()}}
+          onLongPress={() => { Vibration.vibrate(20); move() }}
           onPressOut={moveEnd}
-          // style={{backgroundColor: isActive ? 'blue' : noteID.backgroundColor,}}
+        // style={{backgroundColor: isActive ? 'blue' : noteID.backgroundColor,}}
         >
           <Note
             note={note}
@@ -43,8 +43,9 @@ function Page({ page, notes, onPressTaskRadioButton, saveNote, deleteNote, onMov
     else if (note.type === 'task') {
       return (
         <TouchableOpacity
-          onLongPress={()=>{Vibration.vibrate(20); move()}}
+          onLongPress={() => { Vibration.vibrate(20); move() }}
           onPressOut={moveEnd}
+          onPress={() => { onPressTaskRadioButton(noteID) }}
         >
           <Task
             note={note}

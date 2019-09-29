@@ -20,7 +20,7 @@ Functionality
   [x] fixed by passing notes data throught the extraData prop
 [] edit notes
 [x] drag and drop note positions
-[] Fix page only taking up half the screen after implementing DraggableFlatList
+[x] Fix page only taking up half the screen after implementing DraggableFlatList
 
 [] pagination. With the date at the top of each page.
 [] menu to add a new page. Date is defaulted at today, but you can pick them
@@ -45,13 +45,13 @@ icons: https://material.io/resources/icons/?style=baseline
 
 
 import React, { Component } from 'react';
-import { 
+import {
   StyleSheet,
-  View, 
+  View,
   AsyncStorage
 } from 'react-native';
 import Constants from 'expo-constants';
-import {Provider as PaperProvider } from 'react-native-paper';
+import { Provider as PaperProvider } from 'react-native-paper';
 
 import Page from './components/Page'
 
@@ -61,26 +61,26 @@ export default class App extends Component {
     this.state = {
       currentPage: 0,
       pages: [{
-        title: "first page", 
-        notes: [0,1]
+        title: "first page",
+        notes: [0, 1]
       }],
       notes: {
         //this is an example of a note
         0: {
           type: 'note',
           content: 'this is a note',
-          important : true,
-          inspiration : false
+          important: true,
+          inspiration: false
 
-          
+
         },
         //this is an example of a task. There will be more "note" types in the future. 
         1: {
           type: 'task',
           content: 'this is a task',
           complete: false,
-          important : false,
-          inspiration : true
+          important: false,
+          inspiration: true
         }
       },
       noteID: 2
@@ -98,13 +98,13 @@ export default class App extends Component {
     newPage.notes = newPageNoteOrder;
     this.setState({
       pages: newPages
-    }, ()=> this.saveState())
+    }, () => this.saveState())
   }
   onPressTaskRadioButton(id) {
     this.setState({
       notes: {
         ...this.state.notes,
-        [id] : {
+        [id]: {
           ...this.state.notes[id],
           complete: !this.state.notes[id].complete
         }
@@ -116,36 +116,38 @@ export default class App extends Component {
     //add a new note with the current noteID
     this.setState({
       notes: {
-        ...this.state.notes, 
-        [this.state.noteID] : note
-      }   
-    }, ()=>{
+        ...this.state.notes,
+        [this.state.noteID]: note
+      }
+    }, () => {
       //add the noteID to the current page's notes array
       const { noteID, pages, currentPage } = this.state;
       const newPages = [...pages];
-      const newPage = {...newPages[currentPage]};
+      const newPage = { ...newPages[currentPage] };
       newPage.notes = [...newPage.notes, noteID];
       newPages[currentPage] = newPage;
-      this.setState({ 
+      this.setState({
         pages: newPages
-      }, ()=> {
+      }, () => {
         //increment noteID
         this.setState({
-          noteID: noteID+1
+          noteID: noteID + 1
           //save to local storage
-      }, ()=>{this.saveState()})} )}) 
+        }, () => { this.saveState() })
+      })
+    })
   }
 
   //TODO: cleanup this method
   deleteNote(id) {
-    const {currentPage} = this.state;
-    const newState = {...this.state};
+    const { currentPage } = this.state;
+    const newState = { ...this.state };
     const newPages = [...newState.pages]
     const newPage = newPages[currentPage]
     const targetIndex = newPage.notes.indexOf(id)
     newPage.notes.splice(targetIndex, 1)
 
-    const newNotes = {...newState.notes}
+    const newNotes = { ...newState.notes }
     delete newNotes[id];
 
     newState.pages = newPages;
@@ -153,13 +155,13 @@ export default class App extends Component {
     this.setState(newState)
   }
 
-  componentDidMount(){
+  componentDidMount() {
     this.getState()
-  
+
   }
 
-//LOCAL STORAGE METHODS
-  async saveData (key, data) {
+  //LOCAL STORAGE METHODS
+  async saveData(key, data) {
     try {
       await AsyncStorage.setItem(key, JSON.stringify(data));
     } catch (error) {
@@ -167,7 +169,7 @@ export default class App extends Component {
     }
   }
 
-  async getData (key) {
+  async getData(key) {
     try {
       const value = await AsyncStorage.getItem(key);
       if (value !== null) {
@@ -191,14 +193,14 @@ export default class App extends Component {
   render() {
     return (
       <PaperProvider>
-        <View style={styles.container}> 
-          <Page 
-          page={this.state.pages[0]} 
-          notes={this.state.notes} 
-          onPressTaskRadioButton={this.onPressTaskRadioButton}
-          saveNote={this.saveNote}
-          deleteNote={this.deleteNote}
-          onMoveEnd={this.onMoveEnd}
+        <View style={styles.container}>
+          <Page
+            page={this.state.pages[0]}
+            notes={this.state.notes}
+            onPressTaskRadioButton={this.onPressTaskRadioButton}
+            saveNote={this.saveNote}
+            deleteNote={this.deleteNote}
+            onMoveEnd={this.onMoveEnd}
           />
         </View>
       </PaperProvider>
@@ -210,7 +212,7 @@ export default class App extends Component {
 const styles = StyleSheet.create({
   container: {
     marginTop: Constants.statusBarHeight,
-    flex: 1, 
+    flex: 1,
     // alignItems: 'center', 
     // justifyContent: 'center',
   }
