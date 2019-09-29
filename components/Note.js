@@ -5,7 +5,7 @@ function Note({ note, noteID, deleteNote }) {
   const { content, important, inspiration } = note;
   return (
     <List.Item
-      title={content + ' ' + important + ' ' + inspiration}
+      title={content}
       description="this is a description"
       // titleStyle={{ flexWrap: 'wrap', flex: 1 }}
       left={() => <IconButton size={12} icon="remove" disabled />}

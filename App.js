@@ -4,7 +4,7 @@ TODO
 [x] make Page component
 [x] make note component
 [x] make task component
-[] fix icons for notes and task components
+[x] fix icons for notes and task components
 [x]floating action button that gives user choice of journal entries
   [x]todo
   [x]note  
@@ -29,6 +29,7 @@ Functionality
 [] consolidate rendering for AddNoteModal
 [] cleanup deleteNote method
 [] Check if I need to add vibration permissions to android manifest.xml
+[] swip list items for more options
 
 
 

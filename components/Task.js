@@ -16,7 +16,7 @@ function Task({ noteID, note, onPressTaskRadioButton, deleteNote }) {
   const { complete, content, important, inspiration } = note;
   return (
     <List.Item
-      title={content + ' ' + important + ' ' + inspiration}
+      title={content}
       titleStyle={complete ? styles.complete : styles.none}
       left={() => <IconButton size={12} icon="lens" disabled />}
       right={() => <IconButton size={16} icon="delete" onPress={() => { deleteNote(noteID) }} />}
