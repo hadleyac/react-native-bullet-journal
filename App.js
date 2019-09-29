@@ -90,7 +90,7 @@ export default class App extends Component {
   }
 
   onMoveEnd(newPageNoteOrder) {
-    const newPages = {...this.state.pages}
+    const newPages = [...this.state.pages]
     const newPage = newPages[this.state.currentPage]
     newPage.notes = newPageNoteOrder;
     this.setState({
@@ -136,7 +136,6 @@ export default class App extends Component {
   //TODO: cleanup this method
   deleteNote(id) {
     const {currentPage} = this.state;
-
     const newState = {...this.state};
     const newPages = [...newState.pages]
     const newPage = newPages[currentPage]

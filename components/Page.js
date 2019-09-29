@@ -54,25 +54,25 @@ function Page({ page, notes, onPressTaskRadioButton, saveNote, deleteNote, onMov
         </TouchableOpacity>
       )
     }
-    // return (
-    //   <TouchableOpacity
-    //     style={{ 
-    //       // height: 100, 
-    //       // backgroundColor: isActive ? 'blue' : item.backgroundColor,
-    //       // alignItems: 'center', 
-    //       // justifyContent: 'center' 
-    //     }}
-    //     onLongPress={move}
-    //     onPressOut={moveEnd}
-    //   >
-    //     {/* <Text style={{ 
-    //       fontWeight: 'bold', 
-    //       color: 'white',
-    //       fontSize: 32,
-    //     }}>{item.label}</Text> */}
-    //     <Text>{notes[noteID].content}</Text>
-    //   </TouchableOpacity>
-    // )
+    return (
+      <TouchableOpacity
+        style={{ 
+          // height: 100, 
+          // backgroundColor: isActive ? 'blue' : item.backgroundColor,
+          // alignItems: 'center', 
+          // justifyContent: 'center' 
+        }}
+        onLongPress={move}
+        onPressOut={moveEnd}
+      >
+        {/* <Text style={{ 
+          fontWeight: 'bold', 
+          color: 'white',
+          fontSize: 32,
+        }}>{item.label}</Text> */}
+        <Text>{notes[noteID].content}</Text>
+      </TouchableOpacity>
+    )
   }
 
   return (
@@ -89,33 +89,6 @@ function Page({ page, notes, onPressTaskRadioButton, saveNote, deleteNote, onMov
         />
 
       
-      {/* <FlatList
-        data={page.notes}
-        renderItem={({ item: noteID }) => {
-          let note = notes[noteID]
-
-          if (note.type === 'note') {
-            return <Note
-              note={note}
-              noteID={noteID}
-              deleteNote={deleteNote}
-            />
-          }
-
-          else if (note.type === 'task') {
-            return <Task
-              note={note}
-              onPressTaskRadioButton={onPressTaskRadioButton}
-              noteID={noteID}
-              deleteNote={deleteNote}
-            />
-          }
-
-        }}
-        keyExtractor={(noteID) => noteID.toString()}
-        //I need to reference this data in order to trigger a rerender
-        extraData={notes}
-      /> */}
 
       <AddNoteFAB
         addNote={addNote}
@@ -136,3 +109,31 @@ function Page({ page, notes, onPressTaskRadioButton, saveNote, deleteNote, onMov
 
 export default Page
 
+
+{/* <FlatList
+data={page.notes}
+renderItem={({ item: noteID }) => {
+  let note = notes[noteID]
+
+  if (note.type === 'note') {
+    return <Note
+      note={note}
+      noteID={noteID}
+      deleteNote={deleteNote}
+    />
+  }
+
+  else if (note.type === 'task') {
+    return <Task
+      note={note}
+      onPressTaskRadioButton={onPressTaskRadioButton}
+      noteID={noteID}
+      deleteNote={deleteNote}
+    />
+  }
+
+}}
+keyExtractor={(noteID) => noteID.toString()}
+//I need to reference this data in order to trigger a rerender
+extraData={notes}
+/> */}
