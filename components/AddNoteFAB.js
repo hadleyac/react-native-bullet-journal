@@ -8,7 +8,6 @@ function AddNote( {addNote, addTask} ) {
   const [isOpen, toggleOpen] = useState(false)
 
   return (
-    <Provider>
       <Portal>
         <FAB.Group
           open={isOpen}
@@ -24,9 +23,7 @@ function AddNote( {addNote, addTask} ) {
             }
           }}
         />
-
       </Portal>
-     </Provider>
   )
 }
 
