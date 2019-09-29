@@ -19,7 +19,9 @@ Functionality
   [x] changed to FlatList
   [x] fixed by passing notes data throught the extraData prop
 [] edit notes
-[] drag and drop note positions
+[x] drag and drop note positions
+[] Fix page only taking up half the screen after implementing DraggableFlatList
+
 [] pagination. With the date at the top of each page.
 [] menu to add a new page. Date is defaulted at today, but you can pick them
 [] add time note was created
@@ -210,11 +212,5 @@ const styles = StyleSheet.create({
     flex: 1, 
     // alignItems: 'center', 
     // justifyContent: 'center',
-  },
-  inputStyle: {
-    height: 40,
-    borderColor: 'green',
-    borderWidth: 1
   }
-
 })

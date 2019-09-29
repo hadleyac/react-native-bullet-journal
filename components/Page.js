@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
-import { ScrollView, FlatList, Text, TouchableOpacity, View } from 'react-native';
-import { List } from 'react-native-paper';
+import { Text, TouchableOpacity } from 'react-native';
+// import {} from 'react-native-paper';
 import DraggableFlatList from 'react-native-draggable-flatlist'
 
 import Note from './Note';
@@ -56,7 +56,7 @@ function Page({ page, notes, onPressTaskRadioButton, saveNote, deleteNote, onMov
     }
     return (
       <TouchableOpacity
-        style={{ 
+        style={{
           // height: 100, 
           // backgroundColor: isActive ? 'blue' : item.backgroundColor,
           // alignItems: 'center', 
@@ -77,7 +77,6 @@ function Page({ page, notes, onPressTaskRadioButton, saveNote, deleteNote, onMov
 
   return (
     <>
-    {/* <View> */}
       <DraggableFlatList
         data={page.notes}
         renderItem={this.renderItem}
@@ -85,11 +84,8 @@ function Page({ page, notes, onPressTaskRadioButton, saveNote, deleteNote, onMov
         scrollPercent={5}
         onMoveEnd={({ data }) => onMoveEnd(data)}
         extraData={notes}
-        style={{minHeight: '100%'}}
-        />
-
-      
-
+        style={{ minHeight: '100%' }}
+      />
       <AddNoteFAB
         addNote={addNote}
         addTask={addTask}
@@ -100,40 +96,8 @@ function Page({ page, notes, onPressTaskRadioButton, saveNote, deleteNote, onMov
         noteType={noteType}
         saveNote={saveNote}
       />
-      {/* </View> */}
     </>
-
-
   )
 }
 
 export default Page
-
-
-{/* <FlatList
-data={page.notes}
-renderItem={({ item: noteID }) => {
-  let note = notes[noteID]
-
-  if (note.type === 'note') {
-    return <Note
-      note={note}
-      noteID={noteID}
-      deleteNote={deleteNote}
-    />
-  }
-
-  else if (note.type === 'task') {
-    return <Task
-      note={note}
-      onPressTaskRadioButton={onPressTaskRadioButton}
-      noteID={noteID}
-      deleteNote={deleteNote}
-    />
-  }
-
-}}
-keyExtractor={(noteID) => noteID.toString()}
-//I need to reference this data in order to trigger a rerender
-extraData={notes}
-/> */}
