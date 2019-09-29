@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react'
-import { Button, Dialog, Paragraph, Portal, Modal, Switch, TextInput} from 'react-native-paper';
-import { Keyboard, KeyboardAvoidingView, View, Platform, Text} from 'react-native';
+import { Button, Dialog, Paragraph, Portal, Modal, Switch, TextInput } from 'react-native-paper';
+import { Keyboard, KeyboardAvoidingView, View, Platform, Text } from 'react-native';
 
-function AddNoteModal({isDialogVisible, hideDialog, noteType, saveNote}) {
+function AddNoteModal({ isDialogVisible, hideDialog, noteType, saveNote }) {
 
   let textInputRef = useRef(null)
 
@@ -11,8 +11,8 @@ function AddNoteModal({isDialogVisible, hideDialog, noteType, saveNote}) {
   //Extra note signifiers
   const [important, setImportant] = useState(false);
   const [inspiration, setInspiration] = useState(false);
-  const toggleImportant = () => {setImportant(!important)};
-  const toggleInspiration = () => {setInspiration(!inspiration)};
+  const toggleImportant = () => { setImportant(!important) };
+  const toggleInspiration = () => { setInspiration(!inspiration) };
 
   const onPressAddNoteButton = () => {
     hideDialog();
@@ -20,8 +20,8 @@ function AddNoteModal({isDialogVisible, hideDialog, noteType, saveNote}) {
       const note = {
         type: 'note',
         content: contentText,
-        important : important,
-        inspiration : inspiration
+        important: important,
+        inspiration: inspiration
       }
       saveNote(note);
       console.log('added note');
@@ -35,8 +35,8 @@ function AddNoteModal({isDialogVisible, hideDialog, noteType, saveNote}) {
         type: 'task',
         content: contentText,
         complete: false,
-        important : important,
-        inspiration : inspiration
+        important: important,
+        inspiration: inspiration
       }
       saveNote(task);
       console.log('added task');
@@ -51,47 +51,47 @@ function AddNoteModal({isDialogVisible, hideDialog, noteType, saveNote}) {
     setInspiration(false);
   }
 
-  useEffect(()=>{
-     //Will focus the textInput box if the modal is visible
+  useEffect(() => {
+    //Will focus the textInput box if the modal is visible
     if (isDialogVisible) {
       setTimeout(() => {
         textInputRef.current.focus()
       }, 300);
     }
-  },[isDialogVisible])
+  }, [isDialogVisible])
 
 
   if (noteType === 'note') {
-    return (    
+    return (
       <Portal>
         <Dialog
           visible={isDialogVisible}
           onDismiss={hideDialog}
-          style={{top: -100}}
-          >
+          style={{ top: -120 }}
+        >
           <Dialog.Title>New Note</Dialog.Title>
           <Dialog.Content avoidKeyboard>
-            <TextInput 
+            <TextInput
               ref={textInputRef}
               label='type your note'
               mode='outlined'
               value={contentText}
               onChangeText={text => setContentText(text)}
-              />
-          <Text>Important</Text> 
-          <Switch
-            value={important}
-            onValueChange={toggleImportant}
-          />
-          <Text>Inspiration</Text>
-          <Switch
-            value={inspiration}
-            onValueChange={toggleInspiration}
-          />          
+            />
+            <Text>Important</Text>
+            <Switch
+              value={important}
+              onValueChange={toggleImportant}
+            />
+            <Text>Inspiration</Text>
+            <Switch
+              value={inspiration}
+              onValueChange={toggleInspiration}
+            />
           </Dialog.Content>
           <Dialog.Actions>
-            <Button 
-            onPress={onPressAddNoteButton}
+            <Button
+              onPress={onPressAddNoteButton}
             >
               Done
             </Button>
@@ -99,7 +99,7 @@ function AddNoteModal({isDialogVisible, hideDialog, noteType, saveNote}) {
         </Dialog>
       </Portal>
     )
-  } 
+  }
 
   else if (noteType === 'task') {
     return (
@@ -107,31 +107,31 @@ function AddNoteModal({isDialogVisible, hideDialog, noteType, saveNote}) {
         <Dialog
           visible={isDialogVisible}
           onDismiss={hideDialog}
-          style={{top: -100}}
-          >
+          style={{ top: -100 }}
+        >
           <Dialog.Title>New Task</Dialog.Title>
           <Dialog.Content avoidKeyboard>
-            <TextInput 
+            <TextInput
               ref={textInputRef}
               label='type your task'
               mode='outlined'
               value={contentText}
               onChangeText={text => setContentText(text)}
-              />
-          <Text>Important</Text> 
-          <Switch
-            value={important}
-            onValueChange={toggleImportant}
-          />
-          <Text>Inspiration</Text>
-          <Switch
-            value={inspiration}
-            onValueChange={toggleInspiration}
-          />                 
+            />
+            <Text>Important</Text>
+            <Switch
+              value={important}
+              onValueChange={toggleImportant}
+            />
+            <Text>Inspiration</Text>
+            <Switch
+              value={inspiration}
+              onValueChange={toggleInspiration}
+            />
           </Dialog.Content>
           <Dialog.Actions>
-            <Button 
-            onPress={onPressAddTaskButton}
+            <Button
+              onPress={onPressAddTaskButton}
             >
               Done
             </Button>
