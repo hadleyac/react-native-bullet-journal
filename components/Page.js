@@ -54,25 +54,6 @@ function Page({ page, notes, onPressTaskRadioButton, saveNote, deleteNote, onMov
         </TouchableOpacity>
       )
     }
-    return (
-      <TouchableOpacity
-        style={{
-          // height: 100, 
-          // backgroundColor: isActive ? 'blue' : item.backgroundColor,
-          // alignItems: 'center', 
-          // justifyContent: 'center' 
-        }}
-        onLongPress={move}
-        onPressOut={moveEnd}
-      >
-        {/* <Text style={{ 
-          fontWeight: 'bold', 
-          color: 'white',
-          fontSize: 32,
-        }}>{item.label}</Text> */}
-        <Text>{notes[noteID].content}</Text>
-      </TouchableOpacity>
-    )
   }
 
   return (
