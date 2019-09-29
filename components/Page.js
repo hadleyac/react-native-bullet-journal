@@ -25,13 +25,13 @@ function Page({ page, notes, onPressTaskRadioButton, saveNote, deleteNote }) {
     <>
       <FlatList
         data={page.notes}
-        renderItem={({ item: noteID }) => {
+        renderItem={({ item: noteID, index }) => {
+          console.log(noteID)
           let note = notes[noteID]
 
           if (note.type === 'note') {
             return <Note
               note={note}
-              key={shortid.generate()}
               noteID={noteID}
               deleteNote={deleteNote}
             />
@@ -42,13 +42,14 @@ function Page({ page, notes, onPressTaskRadioButton, saveNote, deleteNote }) {
               note={note}
               onPressTaskRadioButton={onPressTaskRadioButton}
               noteID={noteID}
-              key={shortid.generate()}
               deleteNote={deleteNote}
             />
           }
 
         }}
-        keyExtractor={() => shortid.generate()}
+        keyExtractor={(noteID)=>noteID.toString()}
+        //I need to reference this data in order to trigger a rerender
+        extraData={notes}
       >
 
       </FlatList>
