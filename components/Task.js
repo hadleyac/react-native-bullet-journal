@@ -19,7 +19,7 @@ function Task({ noteID, note, onPressTaskRadioButton, deleteNote }) {
       title={content + ' ' + important + ' ' + inspiration}
       titleStyle={complete ? styles.complete : styles.none}
       left={() => <IconButton size={12} icon="lens" disabled />}
-      right={() => <IconButton icon="edit" onPress={() => { deleteNote(noteID) }} />}
+      right={() => <IconButton size={16} icon="delete" onPress={() => { deleteNote(noteID) }} />}
     />
   )
 }
