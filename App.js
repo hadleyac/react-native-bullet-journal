@@ -15,6 +15,8 @@ TODO
 Functionality
 [x] save notes to local storage
 [x] delete notes
+[] scrollView should not reset after checking of an item (minimize re-renders?)
+  [x] changed to FlatList
 [] edit notes
 [] drag and drop note positions
 [] pagination. With the date at the top of each page.
@@ -29,7 +31,7 @@ Functionality
 Styling
 [] render icon for important and inspiration
 [] Fix styling for important and inspiration toggles
-[] page should be scrollable
+[x] page should be scrollable
 [] if note names are too long, they should wrap to the next line
 
 
@@ -90,6 +92,17 @@ export default class App extends Component {
   }
 
   onPressTaskRadioButton(id) {
+    console.log(id)
+    console.log('pressed radio button')
+    // this.setState({
+    //   notes: {
+    //     ...this.state.notes,
+    //     [id] : {
+    //       ...this.state.notes[id],
+    //       complete: !this.state.notes[id].complete
+    //     }
+    //   }
+    // })
     const newState = {
       ...this.state,
       notes: {
@@ -185,14 +198,22 @@ export default class App extends Component {
     return (
       <PaperProvider>
         <View style={styles.container}> 
-        {this.state.pages.map( (page, index) => <Page 
+        {/* {this.state.pages.map( (page, index) => <Page 
           page={page} 
           notes={this.state.notes} 
           key={shortid.generate()}
           onPressTaskRadioButton={this.onPressTaskRadioButton}
           saveNote={this.saveNote}
           deleteNote={this.deleteNote}
-          />)}
+          />)} */}
+          <Page 
+          page={this.state.pages[0]} 
+          notes={this.state.notes} 
+          // key={shortid.generate()}
+          onPressTaskRadioButton={this.onPressTaskRadioButton}
+          saveNote={this.saveNote}
+          deleteNote={this.deleteNote}
+          />
         </View>
       </PaperProvider>
     )
