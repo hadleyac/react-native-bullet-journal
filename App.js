@@ -55,7 +55,8 @@ import {
 import Constants from 'expo-constants';
 import { DefaultTheme, Provider as PaperProvider } from 'react-native-paper';
 
-import Page from './components/Page'
+import Page from './components/Page';
+import PagesTabView from './components/PagesTabView';
 
 export default class App extends Component {
   constructor(props) {
@@ -85,13 +86,22 @@ export default class App extends Component {
           inspiration: true
         }
       },
-      noteID: 2
+      noteID: 2,
+      navigationState: {
+        index: 0,
+        routes: [
+          { key: 'first', title: 'First' },
+          { key: 'second', title: 'Second' },
+        ],
+      }
 
     }
     this.onMoveEnd = this.onMoveEnd.bind(this);
     this.onPressTaskRadioButton = this.onPressTaskRadioButton.bind(this);
     this.saveNote = this.saveNote.bind(this);
     this.deleteNote = this.deleteNote.bind(this);
+    this.onIndexChange = this.onIndexChange.bind(this);
+
 
     this.theme = {
       ...DefaultTheme,
@@ -102,6 +112,10 @@ export default class App extends Component {
         accent: '#f50057',
       }
     };
+  }
+
+  onIndexChange(index) {
+    this.setState({ navigationState: { ...this.state.navigationState, index: index } })
   }
 
   onMoveEnd(newPageNoteOrder) {
@@ -206,6 +220,7 @@ export default class App extends Component {
     return (
       <PaperProvider theme={this.theme}>
         <View style={styles.container}>
+          <PagesTabView navigationState={this.state.navigationState} onIndexChange={this.onIndexChange} />
           <Page
             page={this.state.pages[0]}
             notes={this.state.notes}
