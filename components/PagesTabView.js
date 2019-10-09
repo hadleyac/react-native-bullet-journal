@@ -1,33 +1,10 @@
 import React from 'react'
-import { View, StyleSheet, Dimensions, Text } from 'react-native';
-import { TabView, TabBar, SceneMap, SceneRendererProps, NavigationState } from 'react-native-tab-view';
+import { Dimensions } from 'react-native';
+import { TabView, TabBar } from 'react-native-tab-view';
 import Page from './Page'
 
-const FirstRoute = () => (
-  <View style={{ backgroundColor: '#ff4081' }} />
-);
 
-const SecondRoute = () => (
-  <View style={{ backgroundColor: '#673ab7' }} />
-);
-
-const ThirdRoute = () => (
-  <View style={{ backgroundColor: '#673ab7' }} />
-);
-
-const FourthRoute = () => (
-  <View style={{ backgroundColor: '#673ab7' }} />
-);
-
-const FifthRoute = () => (
-  <View style={{ backgroundColor: '#673ab7' }} />
-);
-
-const SixthRoute = () => (
-  <View style={{ backgroundColor: '#673ab7' }} />
-);
-
-function PagesTabView({ currentPage, pages, onIndexChange }) {
+function PagesTabView({ currentPage, pages, onIndexChange, notes, onPressTaskRadioButton, saveNote, deleteNote, onMoveEnd }) {
   console.log(pages)
 
   const navigationState = {
@@ -43,34 +20,21 @@ function PagesTabView({ currentPage, pages, onIndexChange }) {
   />;
 
   return (
-    // <View>
-    //   <Text>
-    //     Hello
-    //   </Text>
-    // </View>
     <TabView
       navigationState={navigationState}
-      // renderScene={SceneMap({
-      //   first: FirstRoute,
-      //   second: SecondRoute,
-      //   third: ThirdRoute,
-      //   fourth: FourthRoute,
-      //   // fifth: FifthRoute,
-      //   // sixth: SixthRoute
-
-      // })}
-      renderScene={() => <Text>Hello World</Text>}
+      renderScene={() => (
+        <Page
+          page={pages[currentPage]}
+          notes={notes}
+          onPressTaskRadioButton={onPressTaskRadioButton}
+          saveNote={saveNote}
+          deleteNote={deleteNote}
+          onMoveEnd={onMoveEnd}
+        />
+      )}
       onIndexChange={onIndexChange}
       initialLayout={{ width: Dimensions.get('window').width }}
       renderTabBar={renderTabBar}
-    // renderTabBar={() => {
-
-    //   <TabBar
-    //     {...props}
-    //     scrollEnabled
-
-    //   />
-    // }}
     />
   )
 }

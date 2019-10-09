@@ -21,6 +21,7 @@ Functionality
 [] edit notes
 [x] drag and drop note positions
 [x] Fix page only taking up half the screen after implementing DraggableFlatList
+[] fix swipe loading
 
 [] pagination. With the date at the top of each page.
 [] menu to add a new page. Date is defaulted at today, but you can pick them
@@ -74,19 +75,19 @@ export default class App extends Component {
           title: "Second Page",
           key: "second",
           //key needs to contain no spaces in order to work with the TabView
-          notes: [1, 0]
+          notes: []
         },
         {
           title: "Third Page",
           key: "third",
           //key needs to contain no spaces in order to work with the TabView
-          notes: [0]
+          notes: []
         },
         {
           title: "Fourth Page",
           key: "fourth",
           //key needs to contain no spaces in order to work with the TabView
-          notes: [1]
+          notes: []
         }
 
       ],
@@ -240,9 +241,7 @@ export default class App extends Component {
           <PagesTabView
             currentPage={this.state.currentPage}
             pages={this.state.pages}
-            onIndexChange={this.onIndexChange} />
-          <Page
-            page={this.state.pages[this.state.currentPage]}
+            onIndexChange={this.onIndexChange}
             notes={this.state.notes}
             onPressTaskRadioButton={this.onPressTaskRadioButton}
             saveNote={this.saveNote}
@@ -263,7 +262,5 @@ const styles = StyleSheet.create({
   container: {
     marginTop: Constants.statusBarHeight,
     flex: 1,
-    // alignItems: 'center', 
-    // justifyContent: 'center',
   }
 })
