@@ -53,7 +53,7 @@ import {
   AsyncStorage
 } from 'react-native';
 import Constants from 'expo-constants';
-import { DefaultTheme, Provider as PaperProvider } from 'react-native-paper';
+import { DefaultTheme, Provider as PaperProvider, Button } from 'react-native-paper';
 
 import Page from './components/Page';
 import PagesTabView from './components/PagesTabView';
@@ -63,10 +63,33 @@ export default class App extends Component {
     super(props);
     this.state = {
       currentPage: 0,
-      pages: [{
-        title: "first page",
-        notes: [0, 1]
-      }],
+      pages: [
+        {
+          title: "First Page",
+          key: "first",
+          //key needs to contain no spaces in order to work with the TabView
+          notes: [0, 1]
+        },
+        {
+          title: "Second Page",
+          key: "second",
+          //key needs to contain no spaces in order to work with the TabView
+          notes: [1, 0]
+        },
+        {
+          title: "Third Page",
+          key: "third",
+          //key needs to contain no spaces in order to work with the TabView
+          notes: [0]
+        },
+        {
+          title: "Fourth Page",
+          key: "fourth",
+          //key needs to contain no spaces in order to work with the TabView
+          notes: [1]
+        }
+
+      ],
       notes: {
         //this is an example of a note
         0: {
@@ -86,14 +109,7 @@ export default class App extends Component {
           inspiration: true
         }
       },
-      noteID: 2,
-      navigationState: {
-        index: 0,
-        routes: [
-          { key: 'first', title: 'First' },
-          { key: 'second', title: 'Second' },
-        ],
-      }
+      noteID: 2
 
     }
     this.onMoveEnd = this.onMoveEnd.bind(this);
@@ -115,7 +131,7 @@ export default class App extends Component {
   }
 
   onIndexChange(index) {
-    this.setState({ navigationState: { ...this.state.navigationState, index: index } })
+    this.setState({ currentPage: index })
   }
 
   onMoveEnd(newPageNoteOrder) {
@@ -190,6 +206,7 @@ export default class App extends Component {
   async saveData(key, data) {
     try {
       await AsyncStorage.setItem(key, JSON.stringify(data));
+      console.log('saved')
     } catch (error) {
       console.log('error saving data', error)
     }
@@ -220,9 +237,12 @@ export default class App extends Component {
     return (
       <PaperProvider theme={this.theme}>
         <View style={styles.container}>
-          <PagesTabView navigationState={this.state.navigationState} onIndexChange={this.onIndexChange} />
+          <PagesTabView
+            currentPage={this.state.currentPage}
+            pages={this.state.pages}
+            onIndexChange={this.onIndexChange} />
           <Page
-            page={this.state.pages[0]}
+            page={this.state.pages[this.state.currentPage]}
             notes={this.state.notes}
             onPressTaskRadioButton={this.onPressTaskRadioButton}
             saveNote={this.saveNote}
@@ -230,6 +250,9 @@ export default class App extends Component {
             onMoveEnd={this.onMoveEnd}
           />
         </View>
+        <Button onPress={() => {
+          AsyncStorage.clear();
+        }}>clear storage</Button>
       </PaperProvider>
     )
   }
