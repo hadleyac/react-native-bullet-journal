@@ -24,7 +24,6 @@ function AddNoteModal({ isDialogVisible, hideDialog, noteType, saveNote }) {
         inspiration: inspiration
       }
       saveNote(note);
-      console.log('added note');
       resetInput();
     }
   }
@@ -39,7 +38,6 @@ function AddNoteModal({ isDialogVisible, hideDialog, noteType, saveNote }) {
         inspiration: inspiration
       }
       saveNote(task);
-      console.log('added task');
       resetInput();
     }
   }
@@ -56,7 +54,7 @@ function AddNoteModal({ isDialogVisible, hideDialog, noteType, saveNote }) {
     if (isDialogVisible) {
       setTimeout(() => {
         textInputRef.current.focus()
-      }, 300);
+      }, 50);
     }
   }, [isDialogVisible])
 
@@ -67,7 +65,8 @@ function AddNoteModal({ isDialogVisible, hideDialog, noteType, saveNote }) {
         <Dialog
           visible={isDialogVisible}
           onDismiss={hideDialog}
-          style={{ top: -120 }}
+          style={{ top: Platform.OS === 'ios' ? -100 : 0 }}
+
         >
           <Dialog.Title>New Note</Dialog.Title>
           <Dialog.Content avoidKeyboard>
@@ -98,6 +97,7 @@ function AddNoteModal({ isDialogVisible, hideDialog, noteType, saveNote }) {
           </Dialog.Actions>
         </Dialog>
       </Portal>
+
     )
   }
 
@@ -107,7 +107,7 @@ function AddNoteModal({ isDialogVisible, hideDialog, noteType, saveNote }) {
         <Dialog
           visible={isDialogVisible}
           onDismiss={hideDialog}
-        // style={{ top: -100 }}
+          style={{ top: Platform.OS === 'ios' ? -100 : 0 }}
         >
           <Dialog.Title>New Task</Dialog.Title>
           <Dialog.Content avoidKeyboard>
