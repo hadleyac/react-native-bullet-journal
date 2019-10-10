@@ -51,7 +51,9 @@ import React, { Component } from 'react';
 import {
   StyleSheet,
   View,
-  AsyncStorage
+  AsyncStorage,
+  StatusBar,
+  SafeAreaView
 } from 'react-native';
 import Constants from 'expo-constants';
 import { DefaultTheme, Provider as PaperProvider, Button } from 'react-native-paper';
@@ -237,7 +239,7 @@ export default class App extends Component {
   render() {
     return (
       <PaperProvider theme={this.theme}>
-        <View style={styles.container}>
+        <SafeAreaView style={styles.container}>
           <PagesTabView
             currentPage={this.state.currentPage}
             pages={this.state.pages}
@@ -248,10 +250,10 @@ export default class App extends Component {
             deleteNote={this.deleteNote}
             onMoveEnd={this.onMoveEnd}
           />
-        </View>
-        <Button onPress={() => {
-          AsyncStorage.clear();
-        }}>clear storage</Button>
+          <Button onPress={() => {
+            AsyncStorage.clear();
+          }}>clear storage</Button>
+        </SafeAreaView>
       </PaperProvider>
     )
   }
@@ -260,7 +262,7 @@ export default class App extends Component {
 
 const styles = StyleSheet.create({
   container: {
-    marginTop: Constants.statusBarHeight,
+    // marginTop: Constants.statusBarHeight,
     flex: 1,
   }
 })
