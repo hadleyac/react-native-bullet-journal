@@ -15,8 +15,11 @@ function AddNoteModal({ isDialogVisible, hideDialog, noteType, saveNote }) {
   const toggleInspiration = () => { setInspiration(!inspiration) };
 
   const onPressAddNoteButton = () => {
+    //hide keyboard
     textInputRef.current.blur();
+    //hide dialog
     hideDialog();
+    //run animations first, then logic
     InteractionManager.runAfterInteractions(() => {
       if (contentText) {
         const note = {
