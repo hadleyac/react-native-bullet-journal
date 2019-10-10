@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { Button, Dialog, Paragraph, Portal, Modal, Switch, TextInput } from 'react-native-paper';
-import { Keyboard, KeyboardAvoidingView, View, Platform, Text } from 'react-native';
+import { Keyboard, KeyboardAvoidingView, View, Platform, Text, InteractionManager } from 'react-native';
 
 function AddNoteModal({ isDialogVisible, hideDialog, noteType, saveNote }) {
 
@@ -15,31 +15,37 @@ function AddNoteModal({ isDialogVisible, hideDialog, noteType, saveNote }) {
   const toggleInspiration = () => { setInspiration(!inspiration) };
 
   const onPressAddNoteButton = () => {
+    textInputRef.current.blur();
     hideDialog();
-    if (contentText) {
-      const note = {
-        type: 'note',
-        content: contentText,
-        important: important,
-        inspiration: inspiration
+    InteractionManager.runAfterInteractions(() => {
+      if (contentText) {
+        const note = {
+          type: 'note',
+          content: contentText,
+          important: important,
+          inspiration: inspiration
+        }
+        saveNote(note);
+        resetInput();
       }
-      saveNote(note);
-      resetInput();
-    }
+    })
   }
   const onPressAddTaskButton = () => {
+    textInputRef.current.blur();
     hideDialog();
-    if (contentText) {
-      const task = {
-        type: 'task',
-        content: contentText,
-        complete: false,
-        important: important,
-        inspiration: inspiration
+    InteractionManager.runAfterInteractions(() => {
+      if (contentText) {
+        const task = {
+          type: 'task',
+          content: contentText,
+          complete: false,
+          important: important,
+          inspiration: inspiration
+        }
+        saveNote(task);
+        resetInput();
       }
-      saveNote(task);
-      resetInput();
-    }
+    })
   }
 
   //reset everything after adding a note
