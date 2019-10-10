@@ -4,16 +4,12 @@ import { TabView, TabBar } from 'react-native-tab-view';
 import Page from './Page'
 
 
-function PagesTabView({ currentPage, pages, onIndexChange, notes, onPressTaskRadioButton, saveNote, deleteNote, onMoveEnd }) {
-  console.log(pages)
+function PagesTabView({ addPage, currentPage, pages, onIndexChange, notes, onPressTaskRadioButton, saveNote, deleteNote, onMoveEnd }) {
 
   const navigationState = {
     index: currentPage,
     routes: pages
   }
-
-
-  console.log(navigationState)
 
   const renderTabBar = props => <TabBar {...props}
     scrollEnabled
@@ -24,6 +20,7 @@ function PagesTabView({ currentPage, pages, onIndexChange, notes, onPressTaskRad
       navigationState={navigationState}
       renderScene={() => (
         <Page
+          addPage={addPage}
           page={pages[currentPage]}
           notes={notes}
           onPressTaskRadioButton={onPressTaskRadioButton}

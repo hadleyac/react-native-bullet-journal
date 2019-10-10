@@ -4,7 +4,7 @@ import {
   StyleSheet
 } from 'react-native';
 
-function AddNote({ addNote, addTask }) {
+function AddNote({ addNote, addTask, addPage }) {
   const [isOpen, toggleOpen] = useState(false)
 
   return (
@@ -13,6 +13,7 @@ function AddNote({ addNote, addTask }) {
         open={isOpen}
         icon={isOpen ? 'today' : 'add'}
         actions={[
+          { icon: 'subject', label: 'Page', onPress: addPage },
           { icon: 'check-circle', label: 'Task', onPress: addTask },
           { icon: 'subject', label: 'Note', onPress: addNote },
         ]}

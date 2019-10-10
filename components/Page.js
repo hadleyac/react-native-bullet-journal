@@ -8,7 +8,7 @@ import Task from './Task';
 import AddNoteFAB from './AddNoteFAB'
 import AddNoteModal from './AddNoteModal';
 
-function Page({ page, notes, onPressTaskRadioButton, saveNote, deleteNote, onMoveEnd }) {
+function Page({ addPage, page, notes, onPressTaskRadioButton, saveNote, deleteNote, onMoveEnd }) {
 
   //controls for dialog box
   const [isDialogVisible, setDialog] = useState(false);
@@ -32,7 +32,9 @@ function Page({ page, notes, onPressTaskRadioButton, saveNote, deleteNote, onMov
           style={{ backgroundColor: isActive ? '#fce4ec' : noteID.backgroundColor, }}
         >
           <Note
-            note={note}
+            content={note.content}
+            // important={note.important}
+            // inspiration={note.inspiration}
             noteID={noteID}
             deleteNote={deleteNote}
           />
@@ -49,8 +51,11 @@ function Page({ page, notes, onPressTaskRadioButton, saveNote, deleteNote, onMov
           style={{ backgroundColor: isActive ? '#fce4ec' : noteID.backgroundColor, }}
         >
           <Task
-            note={note}
             onPressTaskRadioButton={onPressTaskRadioButton}
+            complete={note.complete}
+            content={note.content}
+            // important={note.important}
+            // inspiration={note.inspiration}
             noteID={noteID}
             deleteNote={deleteNote}
           />
@@ -73,6 +78,7 @@ function Page({ page, notes, onPressTaskRadioButton, saveNote, deleteNote, onMov
       <AddNoteFAB
         addNote={addNote}
         addTask={addTask}
+        addPage={addPage}
       />
       <AddNoteModal
         isDialogVisible={isDialogVisible}
@@ -80,8 +86,10 @@ function Page({ page, notes, onPressTaskRadioButton, saveNote, deleteNote, onMov
         noteType={noteType}
         saveNote={saveNote}
       />
+
     </>
   )
 }
 
 export default Page
+// export default React.memo(Page)

@@ -1,29 +1,11 @@
 /*
 TODO
-[x] stub outline of what my data will look like
-[x] make Page component
-[x] make note component
-[x] make task component
-[x] fix icons for notes and task components
-[x]floating action button that gives user choice of journal entries
-  [x]todo
-  [x]note  
-[x] textInput in modal is focused by default
-[x] modal respects keyboard location
-  [] fix ongoing connection reset error in expo
-  
+
 Functionality
-[x] save notes to local storage
-[x] delete notes
-[x] scrollView should not reset after checking of an item (minimize re-renders?)
-  [x] changed to FlatList
-  [x] fixed by passing notes data throught the extraData prop
 [] edit notes
-[x] drag and drop note positions
-[x] Fix page only taking up half the screen after implementing DraggableFlatList
 [] fix swipe loading
 
-[] pagination. With the date at the top of each page.
+[x] pagination. With the date at the top of each page.
 [] menu to add a new page. Date is defaulted at today, but you can pick them
 [] add time note was created
 [] edit note
@@ -53,13 +35,16 @@ import {
   View,
   AsyncStorage,
   StatusBar,
-  SafeAreaView
+  SafeAreaView,
+  InteractionManager
 } from 'react-native';
 import Constants from 'expo-constants';
 import { DefaultTheme, Provider as PaperProvider, Button } from 'react-native-paper';
 
 import Page from './components/Page';
 import PagesTabView from './components/PagesTabView';
+import moment from 'moment';
+
 
 export default class App extends Component {
   constructor(props) {
@@ -67,30 +52,31 @@ export default class App extends Component {
     this.state = {
       currentPage: 0,
       pages: [
-        {
-          title: "First Page",
-          key: "first",
-          //key needs to contain no spaces in order to work with the TabView
-          notes: [0, 1]
-        },
-        {
-          title: "Second Page",
-          key: "second",
-          //key needs to contain no spaces in order to work with the TabView
-          notes: []
-        },
-        {
-          title: "Third Page",
-          key: "third",
-          //key needs to contain no spaces in order to work with the TabView
-          notes: []
-        },
-        {
-          title: "Fourth Page",
-          key: "fourth",
-          //key needs to contain no spaces in order to work with the TabView
-          notes: []
-        }
+        // {
+        //   title: "First Page",
+        //   key: "first",
+        //   date: (date object)
+        //   //key needs to contain no spaces in order to work with the TabView
+        //   notes: [0, 1]
+        // },
+        // {
+        //   title: "Second Page",
+        //   key: "second",
+        //   //key needs to contain no spaces in order to work with the TabView
+        //   notes: []
+        // },
+        // {
+        //   title: "Third Page",
+        //   key: "third",
+        //   //key needs to contain no spaces in order to work with the TabView
+        //   notes: []
+        // },
+        // {
+        //   title: "Fourth Page",
+        //   key: "fourth",
+        //   //key needs to contain no spaces in order to work with the TabView
+        //   notes: []
+        // }
 
       ],
       notes: {
@@ -120,6 +106,8 @@ export default class App extends Component {
     this.saveNote = this.saveNote.bind(this);
     this.deleteNote = this.deleteNote.bind(this);
     this.onIndexChange = this.onIndexChange.bind(this);
+    this.checkFirstTimeSetup = this.checkFirstTimeSetup.bind(this);
+    this.addPage = this.addPage.bind(this);
 
 
     this.theme = {
@@ -131,6 +119,25 @@ export default class App extends Component {
         accent: '#f50057',
       }
     };
+  }
+
+  checkFirstTimeSetup() {
+    if (this.state.pages.length === 0) {
+      this.addPage();
+    }
+  }
+  addPage() {
+    console.log('adding page')
+    const timeStamp = new moment()
+    console.log('created timestamp')
+    const starterPage = {
+      date: timeStamp,
+      title: timeStamp.format('ddd d/M/YY'),
+      key: timeStamp.format('dhms'),
+      notes: [],
+    }
+
+    this.setState({ pages: [...this.state.pages, starterPage], currentPage: this.state.pages.length }, () => { this.saveState() })
   }
 
   onIndexChange(index) {
@@ -181,7 +188,6 @@ export default class App extends Component {
         }, () => { this.saveState() })
       })
     })
-    // console.log('saved shit')
   }
 
   //TODO: cleanup this method
@@ -203,8 +209,10 @@ export default class App extends Component {
   }
 
   componentDidMount() {
-    this.getState()
-
+    InteractionManager.runAfterInteractions(() => {
+      this.getState()
+      this.checkFirstTimeSetup()
+    })
   }
 
   //LOCAL STORAGE METHODS
@@ -242,6 +250,7 @@ export default class App extends Component {
       <PaperProvider theme={this.theme}>
         <SafeAreaView style={styles.container}>
           <PagesTabView
+            addPage={this.addPage}
             currentPage={this.state.currentPage}
             pages={this.state.pages}
             onIndexChange={this.onIndexChange}
