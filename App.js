@@ -158,7 +158,7 @@ export default class App extends Component {
   }
 
   saveNote(note) {
-    //add a new note with the current noteID
+    // add a new note with the current noteID
     this.setState({
       notes: {
         ...this.state.notes,
@@ -181,6 +181,7 @@ export default class App extends Component {
         }, () => { this.saveState() })
       })
     })
+    // console.log('saved shit')
   }
 
   //TODO: cleanup this method
@@ -197,7 +198,8 @@ export default class App extends Component {
 
     newState.pages = newPages;
     newState.notes = newNotes
-    this.setState(newState)
+    this.setState(newState, () => this.saveState())
+
   }
 
   componentDidMount() {
@@ -209,7 +211,6 @@ export default class App extends Component {
   async saveData(key, data) {
     try {
       await AsyncStorage.setItem(key, JSON.stringify(data));
-      console.log('saved')
     } catch (error) {
       console.log('error saving data', error)
     }
