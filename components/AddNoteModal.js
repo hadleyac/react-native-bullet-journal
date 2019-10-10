@@ -107,7 +107,7 @@ function AddNoteModal({ isDialogVisible, hideDialog, noteType, saveNote }) {
         <Dialog
           visible={isDialogVisible}
           onDismiss={hideDialog}
-          style={{ top: -100 }}
+        // style={{ top: -100 }}
         >
           <Dialog.Title>New Task</Dialog.Title>
           <Dialog.Content avoidKeyboard>
