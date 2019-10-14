@@ -1,8 +1,9 @@
 import React from 'react';
-import AddTaskModal from './AddTaskModal'
+import AddTaskModal from './AddTaskModal';
 import AddNoteModal from './AddNoteModal';
+import AddPageModal from './AddPageModal';
 
-function ModalRoot({ saveNote }) {
+function ModalRoot({ saveNote, savePage }) {
 
   return (
     <>
@@ -12,10 +13,13 @@ function ModalRoot({ saveNote }) {
       <AddNoteModal
         saveNote={saveNote}
       />
+      <AddPageModal
+        addPage={savePage}
+      />
     </>
 
   )
 }
 
-export default ModalRoot
+export default ModalRoot;
 
