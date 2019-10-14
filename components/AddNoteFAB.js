@@ -1,12 +1,8 @@
 import React, { useState } from 'react';
-import { FAB, Portal, Provider } from 'react-native-paper';
-import {
-  StyleSheet
-} from 'react-native';
+import { FAB, Portal } from 'react-native-paper';
 import { connect } from 'react-redux';
 
 function AddNoteFAB(props) {
-  const { addNote, addTask, addPage } = props;
   const [isOpen, toggleOpen] = useState(false)
 
   return (
@@ -15,11 +11,11 @@ function AddNoteFAB(props) {
         open={isOpen}
         icon={isOpen ? 'today' : 'add'}
         actions={[
-          { icon: 'subject', label: 'Page', onPress: addPage },
+          { icon: 'subject', label: 'Page', onPress: props.toggleAddPageModal },
           { icon: 'check-circle', label: 'Task', onPress: props.toggleAddTaskModal },
           { icon: 'subject', label: 'Note', onPress: props.toggleAddNoteModal },
         ]}
-        onStateChange={({ open }) => toggleOpen(!isOpen)}
+        onStateChange={({ open }) => toggleOpen(!isOpen)} //refactor?
         onPress={() => {
           if (isOpen) {
             console.log('the fab group is open')
@@ -29,16 +25,6 @@ function AddNoteFAB(props) {
     </Portal>
   )
 }
-
-
-const styles = StyleSheet.create({
-  fab: {
-    position: 'absolute',
-    margin: 32,
-    right: 0,
-    bottom: 0,
-  },
-})
 
 
 const mapDispatchToProps = (dispatch) => {
