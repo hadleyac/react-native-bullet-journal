@@ -7,18 +7,9 @@ import Note from './Note';
 import Task from './Task';
 import AddNoteFAB from './AddNoteFAB'
 import AddNoteModal from './AddNoteModal';
+import ModalRoot from './ModalRoot'
 
 function Page({ addPage, page, notes, onPressTaskRadioButton, saveNote, deleteNote, onMoveEnd }) {
-
-  //controls for dialog box
-  const [isDialogVisible, setDialog] = useState(false);
-  const showDialog = () => setDialog(true);
-  const hideDialog = () => setDialog(false);
-
-  //sets type of dialog box to render, then opens it
-  const [noteType, setNoteType] = useState('note');
-  const addNote = () => { setNoteType('note'); showDialog() }
-  const addTask = () => { setNoteType('task'); showDialog() }
 
   renderItem = ({ item: noteID, index, move, moveEnd, isActive }) => {
 
@@ -76,14 +67,9 @@ function Page({ addPage, page, notes, onPressTaskRadioButton, saveNote, deleteNo
         style={{ minHeight: '100%' }}
       />
       <AddNoteFAB
-        addNote={addNote}
-        addTask={addTask}
-        addPage={addPage}
+      // addPage={addPage}
       />
-      <AddNoteModal
-        isDialogVisible={isDialogVisible}
-        hideDialog={hideDialog}
-        noteType={noteType}
+      <ModalRoot
         saveNote={saveNote}
       />
 
