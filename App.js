@@ -15,7 +15,9 @@ Functionality
 [] swip list items for more options
 [] Add firebase back end
 
-
+Clean Code and extensibility:
+[] rebuild how modals render. Context api?
+[] Make component export locations consistent
 
 Styling
 [] render icon for important and inspiration
@@ -32,21 +34,26 @@ icons: https://material.io/resources/icons/?style=baseline
 import React, { Component } from 'react';
 import {
   StyleSheet,
-  View,
   AsyncStorage,
-  StatusBar,
   SafeAreaView,
   InteractionManager
 } from 'react-native';
 import Constants from 'expo-constants';
 import { DefaultTheme, Provider as PaperProvider, Button } from 'react-native-paper';
 
-import Page from './components/Page';
 import PagesTabView from './components/PagesTabView';
 import moment from 'moment';
 
+//Redux imports
+import { Provider } from 'react-redux'
+import { createStore } from 'redux';
+import reducer from './store/reducer'
+const store = createStore(reducer)
 
-export default class App extends Component {
+
+
+
+class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -58,24 +65,6 @@ export default class App extends Component {
         //   date: (date object)
         //   //key needs to contain no spaces in order to work with the TabView
         //   notes: [0, 1]
-        // },
-        // {
-        //   title: "Second Page",
-        //   key: "second",
-        //   //key needs to contain no spaces in order to work with the TabView
-        //   notes: []
-        // },
-        // {
-        //   title: "Third Page",
-        //   key: "third",
-        //   //key needs to contain no spaces in order to work with the TabView
-        //   notes: []
-        // },
-        // {
-        //   title: "Fourth Page",
-        //   key: "fourth",
-        //   //key needs to contain no spaces in order to work with the TabView
-        //   notes: []
         // }
 
       ],
@@ -247,24 +236,26 @@ export default class App extends Component {
 
   render() {
     return (
-      <PaperProvider theme={this.theme}>
-        <SafeAreaView style={styles.container}>
-          <PagesTabView
-            addPage={this.addPage}
-            currentPage={this.state.currentPage}
-            pages={this.state.pages}
-            onIndexChange={this.onIndexChange}
-            notes={this.state.notes}
-            onPressTaskRadioButton={this.onPressTaskRadioButton}
-            saveNote={this.saveNote}
-            deleteNote={this.deleteNote}
-            onMoveEnd={this.onMoveEnd}
-          />
-          <Button onPress={() => {
-            AsyncStorage.clear();
-          }}>clear storage</Button>
-        </SafeAreaView>
-      </PaperProvider>
+      <Provider store={store}>
+        <PaperProvider theme={this.theme}>
+          <SafeAreaView style={styles.container}>
+            <PagesTabView
+              addPage={this.addPage}
+              currentPage={this.state.currentPage}
+              pages={this.state.pages}
+              onIndexChange={this.onIndexChange}
+              notes={this.state.notes}
+              onPressTaskRadioButton={this.onPressTaskRadioButton}
+              saveNote={this.saveNote}
+              deleteNote={this.deleteNote}
+              onMoveEnd={this.onMoveEnd}
+            />
+            <Button onPress={() => {
+              AsyncStorage.clear();
+            }}>clear storage</Button>
+          </SafeAreaView>
+        </PaperProvider>
+      </Provider>
     )
   }
 }
@@ -276,3 +267,7 @@ const styles = StyleSheet.create({
     flex: 1,
   }
 })
+
+
+
+export default App
