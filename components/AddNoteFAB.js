@@ -3,8 +3,10 @@ import { FAB, Portal, Provider } from 'react-native-paper';
 import {
   StyleSheet
 } from 'react-native';
+import { connect } from 'react-redux';
 
-function AddNote({ addNote, addTask, addPage }) {
+function AddNoteFAB(props) {
+  const { addNote, addTask, addPage } = props;
   const [isOpen, toggleOpen] = useState(false)
 
   return (
@@ -14,8 +16,8 @@ function AddNote({ addNote, addTask, addPage }) {
         icon={isOpen ? 'today' : 'add'}
         actions={[
           { icon: 'subject', label: 'Page', onPress: addPage },
-          { icon: 'check-circle', label: 'Task', onPress: addTask },
-          { icon: 'subject', label: 'Note', onPress: addNote },
+          { icon: 'check-circle', label: 'Task', onPress: props.toggleAddTaskModal },
+          { icon: 'subject', label: 'Note', onPress: props.toggleAddNoteModal },
         ]}
         onStateChange={({ open }) => toggleOpen(!isOpen)}
         onPress={() => {
@@ -28,7 +30,6 @@ function AddNote({ addNote, addTask, addPage }) {
   )
 }
 
-export default AddNote
 
 const styles = StyleSheet.create({
   fab: {
@@ -38,3 +39,13 @@ const styles = StyleSheet.create({
     bottom: 0,
   },
 })
+
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    toggleAddPageModal: () => dispatch({ type: 'TOGGLE_ADD_PAGE_MODAL' }),
+    toggleAddTaskModal: () => dispatch({ type: 'TOGGLE_ADD_TASK_MODAL' }),
+    toggleAddNoteModal: () => dispatch({ type: 'TOGGLE_ADD_NOTE_MODAL' })
+  }
+}
+export default connect(null, mapDispatchToProps)(AddNoteFAB)

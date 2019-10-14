@@ -3,7 +3,7 @@ import { Button, Dialog, Portal, Switch, TextInput } from 'react-native-paper';
 import { Platform, Text, InteractionManager } from 'react-native';
 import { connect } from 'react-redux';
 
-function AddNoteModal({ isAddNoteModalOpen, toggleAddNoteModal, saveNote }) {
+function AddTaskModal({ isAddTaskModalOpen, toggleAddTaskModal, saveNote }) {
   let textInputRef = useRef(null)
 
   const [contentText, setContentText] = useState('');
@@ -14,21 +14,19 @@ function AddNoteModal({ isAddNoteModalOpen, toggleAddNoteModal, saveNote }) {
   const toggleImportant = () => { setImportant(!important) };
   const toggleInspiration = () => { setInspiration(!inspiration) };
 
-  const onPressAddNoteButton = () => {
-    //hide keyboard
+  const onPressAddTaskButton = () => {
     textInputRef.current.blur();
-    //hide dialog
-    toggleAddNoteModal();
-    //run animations first, then logic
+    toggleAddTaskModal();
     InteractionManager.runAfterInteractions(() => {
       if (contentText) {
-        const note = {
-          type: 'note',
+        const task = {
+          type: 'task',
           content: contentText,
+          complete: false,
           important: important,
           inspiration: inspiration
         }
-        saveNote(note);
+        saveNote(task);
         resetInput();
       }
     })
@@ -43,26 +41,25 @@ function AddNoteModal({ isAddNoteModalOpen, toggleAddNoteModal, saveNote }) {
 
   useEffect(() => {
     //Will focus the textInput box if the modal is visible
-    if (isAddNoteModalOpen) {
+    if (isAddTaskModalOpen) {
       setTimeout(() => {
         textInputRef.current.focus()
       }, 50);
     }
-  }, [isAddNoteModalOpen])
+  }, [isAddTaskModalOpen])
 
   return (
     <Portal>
       <Dialog
-        visible={isAddNoteModalOpen}
-        onDismiss={toggleAddNoteModal}
+        visible={isAddTaskModalOpen}
+        onDismiss={toggleAddTaskModal}
         style={{ top: Platform.OS === 'ios' ? -100 : 0 }}
-
       >
-        <Dialog.Title>New Note</Dialog.Title>
+        <Dialog.Title>New Task</Dialog.Title>
         <Dialog.Content avoidKeyboard>
           <TextInput
             ref={textInputRef}
-            label='type your note'
+            label='type your task'
             mode='outlined'
             value={contentText}
             onChangeText={text => setContentText(text)}
@@ -80,28 +77,27 @@ function AddNoteModal({ isAddNoteModalOpen, toggleAddNoteModal, saveNote }) {
         </Dialog.Content>
         <Dialog.Actions>
           <Button
-            onPress={onPressAddNoteButton}
+            onPress={onPressAddTaskButton}
           >
             Done
             </Button>
         </Dialog.Actions>
       </Dialog>
     </Portal>
-
   )
 
 }
 
 const mapStateToProps = (state) => {
   return {
-    isAddNoteModalOpen: state.isAddNoteModalOpen,
+    isAddTaskModalOpen: state.isAddTaskModalOpen,
   }
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    toggleAddNoteModal: () => dispatch({ type: 'TOGGLE_ADD_NOTE_MODAL' })
+    toggleAddTaskModal: () => dispatch({ type: 'TOGGLE_ADD_TASK_MODAL' })
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(AddNoteModal);
+export default connect(mapStateToProps, mapDispatchToProps)(AddTaskModal)
