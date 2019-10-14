@@ -1,15 +1,13 @@
-import React, { useState } from 'react'
-import { Text, TouchableOpacity, Vibration } from 'react-native';
-// import {} from 'react-native-paper';
+import React from 'react'
+import { TouchableOpacity, Vibration } from 'react-native';
 import DraggableFlatList from 'react-native-draggable-flatlist'
 
 import Note from './Note';
 import Task from './Task';
 import AddNoteFAB from './AddNoteFAB'
-import AddNoteModal from './AddNoteModal';
 import ModalRoot from './ModalRoot'
 
-function Page({ addPage, page, notes, onPressTaskRadioButton, saveNote, deleteNote, onMoveEnd }) {
+function Page({ savePage, page, notes, onPressTaskRadioButton, saveNote, deleteNote, onMoveEnd }) {
 
   renderItem = ({ item: noteID, index, move, moveEnd, isActive }) => {
 
@@ -66,11 +64,10 @@ function Page({ addPage, page, notes, onPressTaskRadioButton, saveNote, deleteNo
         extraData={notes}
         style={{ minHeight: '100%' }}
       />
-      <AddNoteFAB
-      // addPage={addPage}
-      />
+      <AddNoteFAB />
       <ModalRoot
         saveNote={saveNote}
+        savePage={savePage}
       />
 
     </>
@@ -78,4 +75,3 @@ function Page({ addPage, page, notes, onPressTaskRadioButton, saveNote, deleteNo
 }
 
 export default Page
-// export default React.memo(Page)
