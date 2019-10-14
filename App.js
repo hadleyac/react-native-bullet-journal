@@ -59,13 +59,13 @@ class App extends Component {
     this.state = {
       currentPage: 0,
       pages: [
-        {
-          title: "First Page",
-          key: "first",
-          date: new moment(),
-          //key needs to contain no spaces in order to work with the TabView
-          notes: [0, 1]
-        }
+        // {
+        //   title: "First Page",
+        //   key: "first",
+        //   date: new moment(),
+        //   //key needs to contain no spaces in order to work with the TabView
+        //   notes: [0, 1]
+        // }
 
       ],
       notes: {
@@ -102,7 +102,6 @@ class App extends Component {
 
     this.theme = {
       ...DefaultTheme,
-      // roundness: 10,
       colors: {
         ...DefaultTheme.colors,
         primary: '#f50057',
@@ -113,34 +112,18 @@ class App extends Component {
 
   checkFirstTimeSetup() {
     if (this.state.pages.length === 0) {
-      console.log('need to finish the first time add page function')
-      // this.savePage();
+      const timeStamp = new moment();
+      const page = {
+        date: timeStamp,
+        title: timeStamp.format('ddd d/M/YY'),
+        key: timeStamp.format('dhms'),
+        notes: [],
+      }
+      this.savePage(page);
     }
   }
   savePage(page) {
-
-    if (this.state.pageInsertionIndex === -1) {
-      this.setState({ pages: [...this.state.pages, page], currentPage: this.state.pages.length }, () => { this.saveState() })
-      //insert at end of page list
-    } else {
-      console.log('need to implement edit page method.')
-      // const newPages = [...this.state.pages];
-
-      //insert at specific index
-    }
-    console.log(`trying to save page`, page);
-    // const { title } = page;
-    // console.log('adding page')
-    // const timeStamp = new moment()
-    // console.log('created timestamp')
-    // const starterPage = {
-    //   date: timeStamp,
-    //   title: timeStamp.format('ddd d/M/YY'),
-    //   key: timeStamp.format('dhms'),
-    //   notes: [],
-    // }
-
-    // this.setState({ pages: [...this.state.pages, starterPage], currentPage: this.state.pages.length }, () => { this.saveState() })
+    this.setState({ pages: [...this.state.pages, page], currentPage: this.state.pages.length }, () => { this.saveState() })
   }
 
   onIndexChange(index) {
