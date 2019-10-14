@@ -14,7 +14,7 @@ function ModalRoot({ saveNote, savePage }) {
         saveNote={saveNote}
       />
       <AddPageModal
-        addPage={savePage}
+        savePage={savePage}
       />
     </>
 
