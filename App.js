@@ -59,13 +59,13 @@ class App extends Component {
     this.state = {
       currentPage: 0,
       pages: [
-        // {
-        //   title: "First Page",
-        //   key: "first",
-        //   date: (date object)
-        //   //key needs to contain no spaces in order to work with the TabView
-        //   notes: [0, 1]
-        // }
+        {
+          title: "First Page",
+          key: "first",
+          date: new moment(),
+          //key needs to contain no spaces in order to work with the TabView
+          notes: [0, 1]
+        }
 
       ],
       notes: {
@@ -87,7 +87,8 @@ class App extends Component {
           inspiration: true
         }
       },
-      noteID: 2
+      noteID: 2,
+      pageInsertionIndex: -1,
 
     }
     this.onMoveEnd = this.onMoveEnd.bind(this);
@@ -117,6 +118,16 @@ class App extends Component {
     }
   }
   savePage(page) {
+
+    if (this.state.pageInsertionIndex === -1) {
+      this.setState({ pages: [...this.state.pages, page], currentPage: this.state.pages.length }, () => { this.saveState() })
+      //insert at end of page list
+    } else {
+      console.log('need to implement edit page method.')
+      // const newPages = [...this.state.pages];
+
+      //insert at specific index
+    }
     console.log(`trying to save page`, page);
     // const { title } = page;
     // console.log('adding page')
