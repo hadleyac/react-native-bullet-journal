@@ -4,7 +4,7 @@ import { TabView, TabBar } from 'react-native-tab-view';
 import Page from './Page'
 
 
-function PagesTabView({ addPage, currentPage, pages, onIndexChange, notes, onPressTaskRadioButton, saveNote, deleteNote, onMoveEnd }) {
+function PagesTabView({ savePage, currentPage, pages, onIndexChange, notes, onPressTaskRadioButton, saveNote, deleteNote, onMoveEnd }) {
 
   const navigationState = {
     index: currentPage,
@@ -20,7 +20,7 @@ function PagesTabView({ addPage, currentPage, pages, onIndexChange, notes, onPre
       navigationState={navigationState}
       renderScene={() => (
         <Page
-          addPage={addPage}
+          savePage={savePage}
           page={pages[currentPage]}
           notes={notes}
           onPressTaskRadioButton={onPressTaskRadioButton}
