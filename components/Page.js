@@ -64,12 +64,6 @@ function Page({ savePage, page, notes, onPressTaskRadioButton, saveNote, deleteN
         extraData={notes}
         style={{ minHeight: '100%' }}
       />
-      <AddNoteFAB />
-      <ModalRoot
-        saveNote={saveNote}
-        savePage={savePage}
-      />
-
     </>
   )
 }
