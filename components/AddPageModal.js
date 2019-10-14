@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react'
-import { Button, Dialog, Portal, Switch, TextInput } from 'react-native-paper';
-import { Platform, Text, InteractionManager } from 'react-native';
+import { Button, Dialog, Portal, TextInput } from 'react-native-paper';
+import { Platform, InteractionManager } from 'react-native';
 import { connect } from 'react-redux';
 import moment from 'moment';
 
@@ -12,12 +12,10 @@ function AddPageModal({ isAddPageModalOpen, toggleAddPageModal, savePage }) {
   const [title, setTitle] = useState(timeStamp.format('ddd d/M/YY'));
 
   const onPressAddPageButton = () => {
-
     //hide keyboard
     textInputRef.current.blur();
     //hide dialog
     toggleAddPageModal();
-
     InteractionManager.runAfterInteractions(() => {
       if (title) {
         const page = {
@@ -28,14 +26,12 @@ function AddPageModal({ isAddPageModalOpen, toggleAddPageModal, savePage }) {
         }
         savePage(page);
       }
-
     });
-    console.log('trying to add a page');
-
   }
-
   useEffect(() => {
     //Will focus the textInput box if the modal is visible
+    setTimeStamp(new moment());
+    setTitle(timeStamp.format('ddd d/M/YY'));
     if (isAddPageModalOpen) {
       setTimeout(() => {
         textInputRef.current.focus()
