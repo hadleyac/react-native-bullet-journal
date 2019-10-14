@@ -96,7 +96,7 @@ class App extends Component {
     this.deleteNote = this.deleteNote.bind(this);
     this.onIndexChange = this.onIndexChange.bind(this);
     this.checkFirstTimeSetup = this.checkFirstTimeSetup.bind(this);
-    this.addPage = this.addPage.bind(this);
+    this.savePage = this.savePage.bind(this);
 
 
     this.theme = {
@@ -112,21 +112,24 @@ class App extends Component {
 
   checkFirstTimeSetup() {
     if (this.state.pages.length === 0) {
-      this.addPage();
+      console.log('need to finish the first time add page function')
+      // this.savePage();
     }
   }
-  addPage() {
-    console.log('adding page')
-    const timeStamp = new moment()
-    console.log('created timestamp')
-    const starterPage = {
-      date: timeStamp,
-      title: timeStamp.format('ddd d/M/YY'),
-      key: timeStamp.format('dhms'),
-      notes: [],
-    }
+  savePage(page) {
+    console.log(`trying to save page`, page);
+    // const { title } = page;
+    // console.log('adding page')
+    // const timeStamp = new moment()
+    // console.log('created timestamp')
+    // const starterPage = {
+    //   date: timeStamp,
+    //   title: timeStamp.format('ddd d/M/YY'),
+    //   key: timeStamp.format('dhms'),
+    //   notes: [],
+    // }
 
-    this.setState({ pages: [...this.state.pages, starterPage], currentPage: this.state.pages.length }, () => { this.saveState() })
+    // this.setState({ pages: [...this.state.pages, starterPage], currentPage: this.state.pages.length }, () => { this.saveState() })
   }
 
   onIndexChange(index) {
@@ -240,7 +243,7 @@ class App extends Component {
         <PaperProvider theme={this.theme}>
           <SafeAreaView style={styles.container}>
             <PagesTabView
-              addPage={this.addPage}
+              savePage={this.savePage}
               currentPage={this.state.currentPage}
               pages={this.state.pages}
               onIndexChange={this.onIndexChange}
