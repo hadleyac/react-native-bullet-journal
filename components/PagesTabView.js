@@ -31,11 +31,9 @@ function PagesTabView(props) {
         navigationState={navigationState}
         renderScene={() => (
           <Page
-            savePage={savePage}
             page={pages[currentPage]}
             notes={notes}
             onPressTaskRadioButton={onPressTaskRadioButton}
-            saveNote={saveNote}
             deleteNote={deleteNote}
             onMoveEnd={onMoveEnd}
           />

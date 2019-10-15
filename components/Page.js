@@ -4,10 +4,8 @@ import DraggableFlatList from 'react-native-draggable-flatlist'
 
 import Note from './Note';
 import Task from './Task';
-import AddNoteFAB from './AddNoteFAB'
-import ModalRoot from './ModalRoot'
 
-function Page({ savePage, page, notes, onPressTaskRadioButton, saveNote, deleteNote, onMoveEnd }) {
+function Page({ page, notes, onPressTaskRadioButton, deleteNote, onMoveEnd }) {
 
   renderItem = ({ item: noteID, index, move, moveEnd, isActive }) => {
 
@@ -22,8 +20,9 @@ function Page({ savePage, page, notes, onPressTaskRadioButton, saveNote, deleteN
         >
           <Note
             content={note.content}
-            // important={note.important}
-            // inspiration={note.inspiration}
+            bodyText={note.bodyText}
+            important={note.important}
+            inspiration={note.inspiration}
             noteID={noteID}
             deleteNote={deleteNote}
           />
