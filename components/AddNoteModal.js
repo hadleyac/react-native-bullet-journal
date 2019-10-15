@@ -6,7 +6,9 @@ import { connect } from 'react-redux';
 function AddNoteModal({ isAddNoteModalOpen, toggleAddNoteModal, saveNote }) {
   let textInputRef = useRef(null)
 
-  const [contentText, setContentText] = useState('');
+  const [title, setTitle] = useState('');
+  const [bodyText, setBodyText] = useState('')
+
 
   //Extra note signifiers
   const [important, setImportant] = useState(false);
@@ -21,12 +23,13 @@ function AddNoteModal({ isAddNoteModalOpen, toggleAddNoteModal, saveNote }) {
     toggleAddNoteModal();
     //run animations first, then logic
     InteractionManager.runAfterInteractions(() => {
-      if (contentText) {
+      if (title) {
         const note = {
           type: 'note',
-          content: contentText,
+          content: title,
           important: important,
-          inspiration: inspiration
+          inspiration: inspiration,
+          bodyText: bodyText,
         }
         saveNote(note);
         resetInput();
@@ -36,7 +39,8 @@ function AddNoteModal({ isAddNoteModalOpen, toggleAddNoteModal, saveNote }) {
 
   //reset everything after adding a note
   const resetInput = () => {
-    setContentText('');
+    setTitle('');
+    setBodyText('');
     setImportant(false);
     setInspiration(false);
   }
@@ -64,8 +68,14 @@ function AddNoteModal({ isAddNoteModalOpen, toggleAddNoteModal, saveNote }) {
             ref={textInputRef}
             label='type your note'
             mode='outlined'
-            value={contentText}
-            onChangeText={text => setContentText(text)}
+            value={title}
+            onChangeText={text => setTitle(text)}
+          />
+          <TextInput
+            label='optional body text'
+            mode='outlined'
+            value={bodyText}
+            onChangeText={text => setBodyText(text)}
           />
           <Text>Important</Text>
           <Switch
