@@ -4,7 +4,7 @@ import { Platform, InteractionManager } from 'react-native';
 import { connect } from 'react-redux';
 import moment from 'moment';
 
-function AddPageModal({ isAddPageModalOpen, toggleAddPageModal, savePage, editPage }) {
+function AddPageModal({ isAddPageModalOpen, closeAddPageModal, savePage, editPage }) {
   let textInputRef = useRef(null)
   const editMode = Object.keys(editPage).length !== 0;
   console.log('edit mode status:', editMode)
@@ -16,7 +16,7 @@ function AddPageModal({ isAddPageModalOpen, toggleAddPageModal, savePage, editPa
     //hide keyboard
     textInputRef.current.blur();
     //hide dialog
-    toggleAddPageModal();
+    closeAddPageModal();
     InteractionManager.runAfterInteractions(() => {
       if (title) {
         const timeStamp = moment(editPage.date) || new moment();
@@ -44,7 +44,7 @@ function AddPageModal({ isAddPageModalOpen, toggleAddPageModal, savePage, editPa
     <Portal>
       <Dialog
         visible={isAddPageModalOpen}
-        onDismiss={toggleAddPageModal}
+        onDismiss={closeAddPageModal}
         style={{ top: Platform.OS === 'ios' ? -100 : 0 }}
 
       >
@@ -61,6 +61,7 @@ function AddPageModal({ isAddPageModalOpen, toggleAddPageModal, savePage, editPa
         <Dialog.Actions>
           <Button
             onPress={onPressAddPageButton}
+            disabled={!isAddPageModalOpen}
           >
             Done
             </Button>
@@ -79,7 +80,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    toggleAddPageModal: () => dispatch({ type: 'TOGGLE_ADD_PAGE_MODAL' }),
+    closeAddPageModal: () => dispatch({ type: 'TOGGLE_ADD_PAGE_MODAL' }),
   }
 }
 

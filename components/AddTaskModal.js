@@ -3,7 +3,7 @@ import { Button, Dialog, Portal, Switch, TextInput } from 'react-native-paper';
 import { Platform, Text, InteractionManager } from 'react-native';
 import { connect } from 'react-redux';
 
-function AddTaskModal({ isAddTaskModalOpen, toggleAddTaskModal, saveNote }) {
+function AddTaskModal({ isAddTaskModalOpen, closeAddTaskModal, saveNote }) {
   let textInputRef = useRef(null)
 
   const [contentText, setContentText] = useState('');
@@ -16,7 +16,7 @@ function AddTaskModal({ isAddTaskModalOpen, toggleAddTaskModal, saveNote }) {
 
   const onPressAddTaskButton = () => {
     textInputRef.current.blur();
-    toggleAddTaskModal();
+    closeAddTaskModal();
     InteractionManager.runAfterInteractions(() => {
       if (contentText) {
         const task = {
@@ -52,7 +52,7 @@ function AddTaskModal({ isAddTaskModalOpen, toggleAddTaskModal, saveNote }) {
     <Portal>
       <Dialog
         visible={isAddTaskModalOpen}
-        onDismiss={toggleAddTaskModal}
+        onDismiss={closeAddTaskModal}
         style={{ top: Platform.OS === 'ios' ? -100 : 0 }}
       >
         <Dialog.Title>New Task</Dialog.Title>
@@ -78,6 +78,7 @@ function AddTaskModal({ isAddTaskModalOpen, toggleAddTaskModal, saveNote }) {
         <Dialog.Actions>
           <Button
             onPress={onPressAddTaskButton}
+            disabled={!isAddTaskModalOpen}
           >
             Done
             </Button>
@@ -96,7 +97,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    toggleAddTaskModal: () => dispatch({ type: 'TOGGLE_ADD_TASK_MODAL' })
+    closeAddTaskModal: () => dispatch({ type: 'CLOSE_ADD_TASK_MODAL' })
   }
 }
 

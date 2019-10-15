@@ -3,7 +3,7 @@ import { Button, Dialog, Portal, Switch, TextInput } from 'react-native-paper';
 import { Platform, Text, InteractionManager } from 'react-native';
 import { connect } from 'react-redux';
 
-function AddNoteModal({ isAddNoteModalOpen, toggleAddNoteModal, saveNote }) {
+function AddNoteModal({ isAddNoteModalOpen, closeAddNoteModal, saveNote }) {
   let textInputRef = useRef(null)
 
   const [title, setTitle] = useState('');
@@ -20,7 +20,7 @@ function AddNoteModal({ isAddNoteModalOpen, toggleAddNoteModal, saveNote }) {
     //hide keyboard
     textInputRef.current.blur();
     //hide dialog
-    toggleAddNoteModal();
+    closeAddNoteModal();
     //run animations first, then logic
     InteractionManager.runAfterInteractions(() => {
       if (title) {
@@ -58,7 +58,7 @@ function AddNoteModal({ isAddNoteModalOpen, toggleAddNoteModal, saveNote }) {
     <Portal>
       <Dialog
         visible={isAddNoteModalOpen}
-        onDismiss={toggleAddNoteModal}
+        onDismiss={closeAddNoteModal}
         style={{ top: Platform.OS === 'ios' ? -100 : 0 }}
 
       >
@@ -91,6 +91,7 @@ function AddNoteModal({ isAddNoteModalOpen, toggleAddNoteModal, saveNote }) {
         <Dialog.Actions>
           <Button
             onPress={onPressAddNoteButton}
+            disabled={!isAddNoteModalOpen}
           >
             Done
             </Button>
@@ -110,7 +111,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    toggleAddNoteModal: () => dispatch({ type: 'TOGGLE_ADD_NOTE_MODAL' })
+    closeAddNoteModal: () => dispatch({ type: 'CLOSE_ADD_NOTE_MODAL' })
   }
 }
 
