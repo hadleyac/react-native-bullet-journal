@@ -4,12 +4,13 @@ import { Platform, InteractionManager } from 'react-native';
 import { connect } from 'react-redux';
 import moment from 'moment';
 
-function AddPageModal({ isAddPageModalOpen, toggleAddPageModal, savePage }) {
+function AddPageModal({ isAddPageModalOpen, toggleAddPageModal, savePage, editPage }) {
   let textInputRef = useRef(null)
-  //initalize a timestamp on render
-  const [timeStamp, setTimeStamp] = useState(new moment());
+  const editMode = Object.keys(editPage).length !== 0;
+  console.log('edit mode status:', editMode)
+
   //initialize a page title that defaults to the stringified, formatted, timestamp. 
-  const [title, setTitle] = useState(timeStamp.format('ddd d/M/YY'));
+  const [title, setTitle] = useState(null);
 
   const onPressAddPageButton = () => {
     //hide keyboard
@@ -18,6 +19,7 @@ function AddPageModal({ isAddPageModalOpen, toggleAddPageModal, savePage }) {
     toggleAddPageModal();
     InteractionManager.runAfterInteractions(() => {
       if (title) {
+        const timeStamp = moment(editPage.date) || new moment();
         const page = {
           date: timeStamp,
           title: title,
@@ -29,9 +31,8 @@ function AddPageModal({ isAddPageModalOpen, toggleAddPageModal, savePage }) {
     });
   }
   useEffect(() => {
+    setTitle(editPage.title || new moment().format('ddd d/M/YY'));
     //Will focus the textInput box if the modal is visible
-    setTimeStamp(new moment());
-    setTitle(timeStamp.format('ddd d/M/YY'));
     if (isAddPageModalOpen) {
       setTimeout(() => {
         textInputRef.current.focus()
@@ -71,7 +72,8 @@ function AddPageModal({ isAddPageModalOpen, toggleAddPageModal, savePage }) {
 
 const mapStateToProps = (state) => {
   return {
-    isAddPageModalOpen: state.isAddPageModalOpen
+    isAddPageModalOpen: state.isAddPageModalOpen,
+    editPage: state.editPage
   }
 }
 

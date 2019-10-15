@@ -36,19 +36,11 @@ import {
   StyleSheet,
   AsyncStorage,
   SafeAreaView,
-  InteractionManager
 } from 'react-native';
-import Constants from 'expo-constants';
-import { DefaultTheme, Provider as PaperProvider, Button } from 'react-native-paper';
-
+import { Button } from 'react-native-paper';
+import { connect } from 'react-redux';
 import PagesTabView from './components/PagesTabView';
 import moment from 'moment';
-
-//Redux imports
-import { Provider } from 'react-redux'
-import { createStore } from 'redux';
-import reducer from './store/reducer'
-const store = createStore(reducer)
 
 
 
@@ -100,14 +92,6 @@ class App extends Component {
     this.savePage = this.savePage.bind(this);
 
 
-    this.theme = {
-      ...DefaultTheme,
-      colors: {
-        ...DefaultTheme.colors,
-        primary: '#f50057',
-        accent: '#f50057',
-      }
-    };
   }
 
   checkFirstTimeSetup() {
@@ -123,7 +107,24 @@ class App extends Component {
     }
   }
   savePage(page) {
-    this.setState({ pages: [...this.state.pages, page], currentPage: this.state.pages.length }, () => { this.saveState() })
+    const editPage = this.props.editPage;
+    console.log(editPage)
+
+    //if editPage is empty, append a new page
+    if (Object.keys(editPage).length === 0) {
+      this.setState({ pages: [...this.state.pages, page], currentPage: this.state.pages.length }, () => { this.saveState() })
+    }
+    //Otherwise, we are editing an existing page
+    else {
+      const newPages = [...this.state.pages];
+      for (let i = 0; i < newPages.length; i++) {
+        if (newPages[i].key === page.key) {
+          newPages[i] = page;
+        }
+      }
+      //Set the state, and then reset editPage back to a blank object
+      this.setState({ pages: newPages }, () => { this.props.setEditPage({}); this.saveState(); })
+    }
   }
 
   onIndexChange(index) {
@@ -194,11 +195,9 @@ class App extends Component {
 
   }
 
-  componentDidMount() {
-    InteractionManager.runAfterInteractions(() => {
-      this.getState()
-      this.checkFirstTimeSetup()
-    })
+  async componentDidMount() {
+    await this.getState()
+    this.checkFirstTimeSetup()
   }
 
   //LOCAL STORAGE METHODS
@@ -233,26 +232,25 @@ class App extends Component {
 
   render() {
     return (
-      <Provider store={store}>
-        <PaperProvider theme={this.theme}>
-          <SafeAreaView style={styles.container}>
-            <PagesTabView
-              savePage={this.savePage}
-              currentPage={this.state.currentPage}
-              pages={this.state.pages}
-              onIndexChange={this.onIndexChange}
-              notes={this.state.notes}
-              onPressTaskRadioButton={this.onPressTaskRadioButton}
-              saveNote={this.saveNote}
-              deleteNote={this.deleteNote}
-              onMoveEnd={this.onMoveEnd}
-            />
-            <Button onPress={() => {
-              AsyncStorage.clear();
-            }}>clear storage</Button>
-          </SafeAreaView>
-        </PaperProvider>
-      </Provider>
+      <SafeAreaView style={styles.container}>
+        <PagesTabView
+          savePage={this.savePage}
+          currentPage={this.state.currentPage}
+          pages={this.state.pages}
+          onIndexChange={this.onIndexChange}
+          notes={this.state.notes}
+          onPressTaskRadioButton={this.onPressTaskRadioButton}
+          saveNote={this.saveNote}
+          deleteNote={this.deleteNote}
+          onMoveEnd={this.onMoveEnd}
+        />
+        <Button onPress={() => {
+          AsyncStorage.clear();
+        }}>clear storage</Button>
+        <Button onPress={() => {
+          console.log(store.getState())
+        }}>log redux state</Button>
+      </SafeAreaView>
     )
   }
 }
@@ -265,6 +263,16 @@ const styles = StyleSheet.create({
   }
 })
 
+const mapStateToProps = (state) => {
+  return {
+    editPage: state.editPage
+  }
+}
 
+const mapDispatchToProps = (dispatch) => {
+  return {
+    setEditPage: (targetPage) => dispatch({ type: 'SET_EDIT_PAGE', value: targetPage }),
+  }
+}
 
-export default App
+export default connect(mapStateToProps, mapDispatchToProps)(App)
