@@ -8,7 +8,6 @@ import { connect } from 'react-redux';
 
 
 function PagesTabView(props) {
-  console.log(props.editPage);
   const { savePage, setEditPage, toggleAddPageModal, currentPage, pages, onIndexChange, notes, onPressTaskRadioButton, saveNote, deleteNote, onMoveEnd } = props;
 
   const navigationState = {

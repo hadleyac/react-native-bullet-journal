@@ -7,7 +7,6 @@ import moment from 'moment';
 function AddPageModal({ isAddPageModalOpen, closeAddPageModal, savePage, editPage }) {
   let textInputRef = useRef(null)
   const editMode = Object.keys(editPage).length !== 0;
-  console.log('edit mode status:', editMode)
 
   //initialize a page title that defaults to the stringified, formatted, timestamp. 
   const [title, setTitle] = useState(null);

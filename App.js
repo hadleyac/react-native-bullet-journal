@@ -108,7 +108,6 @@ class App extends Component {
   }
   savePage(page) {
     const editPage = this.props.editPage;
-    console.log(editPage)
 
     //if editPage is empty, append a new page
     if (Object.keys(editPage).length === 0) {
