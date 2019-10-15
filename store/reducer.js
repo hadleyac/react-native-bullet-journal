@@ -1,4 +1,5 @@
 const initialState = {
+  isEditPageModalOpen: false,
   isAddPageModalOpen: false,
   isAddTaskModalOpen: false,
   isAddNoteModalOpen: false,
@@ -14,6 +15,10 @@ const reducer = (state = initialState, action) => {
       return { ...state, isAddPageModalOpen: !state.isAddPageModalOpen };
     case 'CLOSE_ADD_PAGE_MODAL':
       return { ...state, isAddPageModalOpen: false };
+    case 'CLOSE_EDIT_PAGE_MODAL':
+      return { ...state, isEditPageModalOpen: false };
+    case 'SHOW_EDIT_PAGE_MODAL':
+      return { ...state, isEditPageModalOpen: true };
     case 'TOGGLE_ADD_TASK_MODAL':
       return { ...state, isAddTaskModalOpen: !state.isAddTaskModalOpen };
     case 'CLOSE_ADD_TASK_MODAL':

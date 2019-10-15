@@ -8,7 +8,7 @@ import { connect } from 'react-redux';
 
 
 function PagesTabView(props) {
-  const { savePage, setEditPage, toggleAddPageModal, currentPage, pages, onIndexChange, notes, onPressTaskRadioButton, saveNote, deleteNote, onMoveEnd } = props;
+  const { savePage, setEditPage, showEditPageModal, currentPage, pages, onIndexChange, notes, onPressTaskRadioButton, saveNote, deleteNote, onMoveEnd } = props;
 
   const navigationState = {
     index: currentPage,
@@ -19,7 +19,8 @@ function PagesTabView(props) {
     scrollEnabled
     onTabLongPress={(target) => {
       setEditPage(target.route)
-      toggleAddPageModal();
+      showEditPageModal();
+      // toggleAddPageModal();
       // setEditPage({});
     }}
   />;
@@ -59,7 +60,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     setEditPage: (targetPage) => dispatch({ type: 'SET_EDIT_PAGE', value: targetPage }),
-    toggleAddPageModal: () => dispatch({ type: 'TOGGLE_ADD_PAGE_MODAL' }),
+    showEditPageModal: () => dispatch({ type: 'SHOW_EDIT_PAGE_MODAL' }),
   }
 }
 

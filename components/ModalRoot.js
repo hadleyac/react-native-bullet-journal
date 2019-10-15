@@ -2,6 +2,7 @@ import React from 'react';
 import AddTaskModal from './AddTaskModal';
 import AddNoteModal from './AddNoteModal';
 import AddPageModal from './AddPageModal';
+import EditPageModal from './EditPageModal';
 
 function ModalRoot({ saveNote, savePage }) {
 
@@ -14,6 +15,9 @@ function ModalRoot({ saveNote, savePage }) {
         saveNote={saveNote}
       />
       <AddPageModal
+        savePage={savePage}
+      />
+      <EditPageModal
         savePage={savePage}
       />
     </>

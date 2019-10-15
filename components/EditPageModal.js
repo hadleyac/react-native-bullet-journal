@@ -4,7 +4,7 @@ import { Platform, InteractionManager } from 'react-native';
 import { connect } from 'react-redux';
 import moment from 'moment';
 
-function AddPageModal({ isAddPageModalOpen, closeAddPageModal, savePage }) {
+function EditPageModal({ isEditPageModalOpen, closeEditPageModal, savePage, editPage }) {
   let textInputRef = useRef(null)
 
   //initialize a page title that defaults to the stringified, formatted, timestamp. 
@@ -14,10 +14,10 @@ function AddPageModal({ isAddPageModalOpen, closeAddPageModal, savePage }) {
     //hide keyboard
     textInputRef.current.blur();
     //hide dialog
-    closeAddPageModal();
+    closeEditPageModal();
     InteractionManager.runAfterInteractions(() => {
       if (title) {
-        const timeStamp = new moment();
+        const timeStamp = moment(editPage.date);
         const page = {
           date: timeStamp,
           title: title,
@@ -29,25 +29,24 @@ function AddPageModal({ isAddPageModalOpen, closeAddPageModal, savePage }) {
     });
   }
   useEffect(() => {
-    if (isAddPageModalOpen) {
-      //update date when toggled
-      setTitle(new moment().format('ddd d/M/YY'));
-      //Will focus the textInput box if the modal is visible
+    //Will focus the textInput box if the modal is visible
+    if (isEditPageModalOpen) {
+      setTitle(editPage.title);
       setTimeout(() => {
         textInputRef.current.focus()
       }, 50);
     }
-  }, [isAddPageModalOpen])
+  }, [isEditPageModalOpen])
 
   return (
     <Portal>
       <Dialog
-        visible={isAddPageModalOpen}
-        onDismiss={closeAddPageModal}
+        visible={isEditPageModalOpen}
+        onDismiss={closeEditPageModal}
         style={{ top: Platform.OS === 'ios' ? -100 : 0 }}
 
       >
-        <Dialog.Title>Add Page</Dialog.Title>
+        <Dialog.Title>Edit Page</Dialog.Title>
         <Dialog.Content avoidKeyboard>
           <TextInput
             ref={textInputRef}
@@ -59,11 +58,18 @@ function AddPageModal({ isAddPageModalOpen, closeAddPageModal, savePage }) {
         </Dialog.Content>
         <Dialog.Actions>
           <Button
-            onPress={onPressAddPageButton}
-            disabled={!isAddPageModalOpen}
+            onPress={() => console.log('trying to delete page')}
+            disabled={!isEditPageModalOpen}
+            icon='delete'
           >
-            Done
-            </Button>
+            Delete
+          </Button>
+          <Button
+            onPress={onPressAddPageButton}
+            disabled={!isEditPageModalOpen}
+          >
+            Update
+          </Button>
         </Dialog.Actions>
       </Dialog>
     </Portal>
@@ -72,14 +78,15 @@ function AddPageModal({ isAddPageModalOpen, closeAddPageModal, savePage }) {
 
 const mapStateToProps = (state) => {
   return {
-    isAddPageModalOpen: state.isAddPageModalOpen,
+    isEditPageModalOpen: state.isEditPageModalOpen,
+    editPage: state.editPage
   }
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    closeAddPageModal: () => dispatch({ type: 'TOGGLE_ADD_PAGE_MODAL' }),
+    closeEditPageModal: () => dispatch({ type: 'CLOSE_EDIT_PAGE_MODAL' }),
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(AddPageModal);
+export default connect(mapStateToProps, mapDispatchToProps)(EditPageModal);
