@@ -20,8 +20,6 @@ function PagesTabView(props) {
     onTabLongPress={(target) => {
       setEditPage(target.route)
       showEditPageModal();
-      // toggleAddPageModal();
-      // setEditPage({});
     }}
   />;
 
