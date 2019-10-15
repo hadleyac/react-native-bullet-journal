@@ -4,7 +4,7 @@ const initialState = {
   isAddNoteModalOpen: false,
   important: false,
   inspiration: false,
-
+  editPage: {}
 
 }
 
@@ -16,6 +16,8 @@ const reducer = (state = initialState, action) => {
       return { ...state, isAddTaskModalOpen: !state.isAddTaskModalOpen };
     case 'TOGGLE_ADD_NOTE_MODAL':
       return { ...state, isAddNoteModalOpen: !state.isAddNoteModalOpen };
+    case 'SET_EDIT_PAGE':
+      return { ...state, editPage: action.value }
   }
   return state
 }
