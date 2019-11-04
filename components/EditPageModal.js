@@ -4,7 +4,7 @@ import { Platform, InteractionManager } from 'react-native';
 import { connect } from 'react-redux';
 import moment from 'moment';
 
-function EditPageModal({ isEditPageModalOpen, closeEditPageModal, savePage, editPage }) {
+function EditPageModal({ setEditPage, isEditPageModalOpen, closeEditPageModal, savePage, editPage, deletePage }) {
   let textInputRef = useRef(null)
 
   //initialize a page title that defaults to the stringified, formatted, timestamp. 
@@ -27,6 +27,15 @@ function EditPageModal({ isEditPageModalOpen, closeEditPageModal, savePage, edit
         savePage(page);
       }
     });
+  }
+
+  onPressDeletePageButton = () => {
+    InteractionManager.runAfterInteractions(() => {
+      closeEditPageModal();
+      deletePage(editPage.key)
+      setEditPage({})
+    })
+
   }
   useEffect(() => {
     //Will focus the textInput box if the modal is visible
@@ -58,7 +67,7 @@ function EditPageModal({ isEditPageModalOpen, closeEditPageModal, savePage, edit
         </Dialog.Content>
         <Dialog.Actions>
           <Button
-            onPress={() => console.log('trying to delete page')}
+            onPress={onPressDeletePageButton}
             disabled={!isEditPageModalOpen}
             icon='delete'
           >
@@ -85,6 +94,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
+    setEditPage: (targetPage) => dispatch({ type: 'SET_EDIT_PAGE', value: targetPage }),
     closeEditPageModal: () => dispatch({ type: 'CLOSE_EDIT_PAGE_MODAL' }),
   }
 }
