@@ -4,7 +4,7 @@ import AddNoteModal from './AddNoteModal';
 import AddPageModal from './AddPageModal';
 import EditPageModal from './EditPageModal';
 
-function ModalRoot({ saveNote, savePage }) {
+function ModalRoot({ saveNote, savePage, deletePage }) {
 
   return (
     <>
@@ -19,6 +19,7 @@ function ModalRoot({ saveNote, savePage }) {
       />
       <EditPageModal
         savePage={savePage}
+        deletePage={deletePage}
       />
     </>
 
