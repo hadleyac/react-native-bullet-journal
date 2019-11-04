@@ -1,5 +1,6 @@
 {
   "expo": {
+    "entryPoint": "./Index.js",
     "name": "Simple Bullet Journal",
     "slug": "simple-bullet-journal",
     "privacy": "public",
