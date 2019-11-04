@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState, useEffect, useRef } from 'react';
 import { Button, Dialog, Portal, TextInput } from 'react-native-paper';
 import { Platform, InteractionManager } from 'react-native';
 import { connect } from 'react-redux';
@@ -78,7 +78,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    closeAddPageModal: () => dispatch({ type: 'TOGGLE_ADD_PAGE_MODAL' }),
+    closeAddPageModal: () => dispatch({ type: 'CLOSE_ADD_PAGE_MODAL' }),
   }
 }
 
