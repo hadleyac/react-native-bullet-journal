@@ -37,20 +37,3 @@ class Index extends Component {
 }
 
 export default registerRootComponent(Index);
-
-// {/* 
-// <Provider store={store}>
-//         <PaperProvider theme={theme}>
-//       <BreadProvider store={store}>
-//         <App />
-//         <BreadProvider />
-//         </PaperProvider>
-//       </Provider> */}
-
-
-
-    //   <Provider store={store}>
-    //   <BreadProvider>
-    //     <App />
-    //   </BreadProvider >
-    // </Provider>
