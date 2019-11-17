@@ -2,6 +2,7 @@
 TODO
 
 Functionality
+[] add routing for auth pages
 [] edit notes
 [] fix swipe loading
 [] add time note was created
@@ -10,7 +11,7 @@ Functionality
 [] cleanup deleteNote method
 [] Check if I need to add vibration permissions to android manifest.xml
 [] swip list items for more options
-[] Add firebase back end
+
 
 Clean Code and extensibility:
 [] Make component export locations consistent
@@ -91,22 +92,17 @@ class App extends Component {
       pageInsertionIndex: -1,
 
     }
-    this.onMoveEnd = this.onMoveEnd.bind(this);
-    this.onPressTaskRadioButton = this.onPressTaskRadioButton.bind(this);
-    this.saveNote = this.saveNote.bind(this);
+    //Leaving these here for now, need to research why I'm getting an error when using async with arrow functions
     this.deleteNote = this.deleteNote.bind(this);
-    this.onIndexChange = this.onIndexChange.bind(this);
-    this.checkFirstTimeSetup = this.checkFirstTimeSetup.bind(this);
-    this.savePage = this.savePage.bind(this);
     this.deletePage = this.deletePage.bind(this);
-    this.onAuthStateChanged = this.onAuthStateChanged.bind(this);
+
 
     //Initialize Firebase if not done already
     if (!firebase.apps.length) firebase.initializeApp(ApiKeys.firebaseConfig);
     firebase.auth().onAuthStateChanged(this.onAuthStateChanged);
   }
 
-  onAuthStateChanged(user) {
+  onAuthStateChanged = (user) => {
     this.setState({ isAuthenticationReady: true });
     this.setState({ isAuthenticated: !!user });
   }
@@ -122,7 +118,7 @@ class App extends Component {
       });
   }
 
-  checkFirstTimeSetup() {
+  checkFirstTimeSetup = () => {
     if (this.state.pages.length === 0) {
       const timeStamp = new moment();
       const page = {
@@ -134,7 +130,7 @@ class App extends Component {
       this.savePage(page);
     }
   }
-  savePage(page) {
+  savePage = (page) => {
     const editPage = this.props.editPage;
 
     //if editPage is empty, append a new page
@@ -154,11 +150,11 @@ class App extends Component {
     }
   }
 
-  onIndexChange(index) {
+  onIndexChange = (index) => {
     this.setState({ currentPage: index })
   }
 
-  onMoveEnd(newPageNoteOrder) {
+  onMoveEnd = (newPageNoteOrder) => {
     const newPages = [...this.state.pages]
     const newPage = newPages[this.state.currentPage]
     newPage.notes = newPageNoteOrder;
@@ -166,7 +162,7 @@ class App extends Component {
       pages: newPages
     }, () => this.saveState())
   }
-  onPressTaskRadioButton(id) {
+  onPressTaskRadioButton = (id) => {
     this.setState({
       notes: {
         ...this.state.notes,
@@ -178,7 +174,7 @@ class App extends Component {
     }, () => this.saveState())
   }
 
-  saveNote(note) {
+  saveNote = (note) => {
     // add a new note with the current noteID
     this.setState({
       notes: {
@@ -310,14 +306,6 @@ class App extends Component {
   render() {
     if (this.state.isAuthenticated) {
       return (
-        // <SafeAreaView style={styles.container}>
-        //   <View>
-        //     <DrawerPage />
-        //   </View>
-        // </SafeAreaView>
-
-
-        //OLD
         <SafeAreaView style={styles.container}>
           <PagesTabView
             savePage={this.savePage}
@@ -331,12 +319,12 @@ class App extends Component {
             onMoveEnd={this.onMoveEnd}
             deletePage={this.deletePage}
           />
-          {/* <Button onPress={() => {
+          <Button onPress={() => {
             AsyncStorage.clear();
           }}>clear storage</Button>
           <Button onPress={() => {
             console.log('pages', this.state.pages)
-          }}>log pages</Button> */}
+          }}>log pages</Button>
           <Button
             onPress={() => this.signOut()}>
             TEST FIREBASE SIGNOUT
