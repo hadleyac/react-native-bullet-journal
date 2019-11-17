@@ -1,19 +1,14 @@
-import React from 'react';
+import React, { Component } from 'react';
 import App from './App';
 import { DefaultTheme, Provider as PaperProvider } from 'react-native-paper';
+import { BreadProvider } from "material-bread";
 import { registerRootComponent } from 'expo';
-import { activateKeepAwake } from 'expo-keep-awake';
 
 //Redux Imports
 import { Provider } from 'react-redux'
 import { createStore } from 'redux';
 import reducer from './store/reducer'
 
-//This was present in the default AppEntry.js, so I copied it here. 
-if (__DEV__) {
-  activateKeepAwake();
-}
-console.log('are we getting to the index')
 const store = createStore(reducer)
 
 const theme = {
@@ -25,14 +20,37 @@ const theme = {
   }
 };
 
-function Index() {
-  return (
-    <Provider store={store}>
-      <PaperProvider theme={theme}>
-        <App />
-      </PaperProvider>
-    </Provider>
-  )
+class Index extends Component {
+  constructor() {
+    super()
+  }
+  render() {
+    return (
+      <Provider store={store}>
+        <PaperProvider theme={theme}>
+          <App />
+        </PaperProvider>
+      </Provider>
+
+    )
+  }
 }
 
 export default registerRootComponent(Index);
+
+// {/* 
+// <Provider store={store}>
+//         <PaperProvider theme={theme}>
+//       <BreadProvider store={store}>
+//         <App />
+//         <BreadProvider />
+//         </PaperProvider>
+//       </Provider> */}
+
+
+
+    //   <Provider store={store}>
+    //   <BreadProvider>
+    //     <App />
+    //   </BreadProvider >
+    // </Provider>

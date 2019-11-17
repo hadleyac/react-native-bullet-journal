@@ -1,13 +1,10 @@
 {
   "expo": {
-    "entryPoint": "./Index.js",
+    "entryPoint": "Index.js",
     "name": "Simple Bullet Journal",
     "slug": "simple-bullet-journal",
     "privacy": "public",
     "sdkVersion": "35.0.0",
-    "androidStatusBar": {
-      "backgroundColor": "#f50057"
-    },
     "platforms": [
       "ios",
       "android",

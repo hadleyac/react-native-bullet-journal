@@ -5,6 +5,7 @@ import Page from './Page';
 import AddNoteFAB from './AddNoteFAB';
 import ModalRoot from './ModalRoot';
 import { connect } from 'react-redux';
+import { ThemeContext } from 'material-bread';
 
 
 function PagesTabView(props) {
@@ -15,13 +16,16 @@ function PagesTabView(props) {
     routes: pages
   }
 
-  const renderTabBar = props => <TabBar {...props}
-    scrollEnabled
-    onTabLongPress={(target) => {
-      setEditPage(target.route)
-      showEditPageModal();
-    }}
-  />;
+  const renderTabBar = props =>
+    <TabBar
+      {...props}
+      scrollEnabled
+      style={{ backgroundColor: '#f50057' }}
+      onTabLongPress={(target) => {
+        setEditPage(target.route)
+        showEditPageModal();
+      }}
+    />;
 
   return (
     <>

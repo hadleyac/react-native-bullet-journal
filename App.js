@@ -4,9 +4,6 @@ TODO
 Functionality
 [] edit notes
 [] fix swipe loading
-
-[x] pagination. With the date at the top of each page.
-[] menu to add a new page. Date is defaulted at today, but you can pick them
 [] add time note was created
 [] edit note
 [] consolidate rendering for AddNoteModal
@@ -16,13 +13,11 @@ Functionality
 [] Add firebase back end
 
 Clean Code and extensibility:
-[] rebuild how modals render. Context api?
 [] Make component export locations consistent
 
 Styling
 [] render icon for important and inspiration
 [] Fix styling for important and inspiration toggles
-[x] page should be scrollable
 [] if note names are too long, they should wrap to the next line
 
 
@@ -36,11 +31,22 @@ import {
   StyleSheet,
   AsyncStorage,
   SafeAreaView,
+  View,
+  Text
 } from 'react-native';
 import { Button } from 'react-native-paper';
 import { connect } from 'react-redux';
-import PagesTabView from './components/PagesTabView';
 import moment from 'moment';
+import { BreadProvider } from "material-bread";
+
+import PagesTabView from './components/PagesTabView';
+import DrawerPage from './components/DrawerPage';
+import SignupScreen from './components/auth/SignupScreen'
+import ForgotPasswordScreen from './components/auth/ForgotPasswordScreen'
+import LoginScreen from './components/auth/LoginScreen'
+
+import ApiKeys from './constants/ApiKeys'
+import * as firebase from 'firebase';
 
 
 
@@ -49,6 +55,8 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      isAuthenticationReady: false,
+      isAuthenticated: false,
       currentPage: 0,
       pages: [
         // {
@@ -90,8 +98,28 @@ class App extends Component {
     this.onIndexChange = this.onIndexChange.bind(this);
     this.checkFirstTimeSetup = this.checkFirstTimeSetup.bind(this);
     this.savePage = this.savePage.bind(this);
+    this.deletePage = this.deletePage.bind(this);
+    this.onAuthStateChanged = this.onAuthStateChanged.bind(this);
 
+    //Initialize Firebase if not done already
+    if (!firebase.apps.length) firebase.initializeApp(ApiKeys.firebaseConfig);
+    firebase.auth().onAuthStateChanged(this.onAuthStateChanged);
+  }
 
+  onAuthStateChanged(user) {
+    this.setState({ isAuthenticationReady: true });
+    this.setState({ isAuthenticated: !!user });
+  }
+
+  signOut = () => {
+    firebase.auth().signOut()
+      .then(() => {
+        // Sign-out successful.
+        console.log('sign out successful')
+      }).catch(function (error) {
+        // An error happened.
+        console.log('error in signout')
+      });
   }
 
   checkFirstTimeSetup() {
@@ -177,7 +205,7 @@ class App extends Component {
   }
 
   //TODO: cleanup this method
-  deleteNote(id) {
+  async deleteNote(id) {
     const { currentPage } = this.state;
     const newState = { ...this.state };
     const newPages = [...newState.pages]
@@ -191,12 +219,62 @@ class App extends Component {
     newState.pages = newPages;
     newState.notes = newNotes
     this.setState(newState, () => this.saveState())
+  }
+
+  //TODO: separate this method into several smaller methods
+  async deletePage(key) {
+    if (this.state.pages.length > 1) {
+      let notesToDelete;
+      let deleteIndex;
+      const newPages = [...this.state.pages];
+      for (let i = 0; i < newPages.length; i++) {
+        if (newPages[i].key === key) {
+          notesToDelete = newPages[i].notes.slice();
+          deleteIndex = i;
+          break;
+        }
+      }
+      newPages.splice(deleteIndex, 1);
+
+      let newCurrentPage = this.state.currentPage;
+      //if we are deleting the current page
+      if (newCurrentPage === deleteIndex) {
+        //if it's not the first page, always go back one page
+        if (newCurrentPage !== 0) {
+          newCurrentPage -= 1;
+        }
+      }
+      //if the page we are deleting is behind the current page, decrement the current page index. 
+      else if (deleteIndex < newCurrentPage) {
+        newCurrentPage -= 1
+      }
+
+      // this.setState({ pages: newPages, currentPage: newCurrentPage }, () => { this.saveState() })
+      console.log(this.state.notes)
+      this.setState({ pages: newPages, currentPage: newCurrentPage }, async () => {
+        for (let i = 0; i < notesToDelete.length; i++) {
+          console.log(notesToDelete[i])
+          await this.deleteNote(notesToDelete[i])
+        }
+        console.log(this.state.notes)
+        this.saveState();
+      })
+
+    }
 
   }
 
   async componentDidMount() {
     await this.getState()
     this.checkFirstTimeSetup()
+
+
+    //Firebase experimentation
+    if (this.isAuthenticated) {
+      firebase.database().ref('users/' + 'testman').set({
+        highscore: 8
+      });
+    }
   }
 
   //LOCAL STORAGE METHODS
@@ -230,27 +308,61 @@ class App extends Component {
 
 
   render() {
-    return (
-      <SafeAreaView style={styles.container}>
-        <PagesTabView
-          savePage={this.savePage}
-          currentPage={this.state.currentPage}
-          pages={this.state.pages}
-          onIndexChange={this.onIndexChange}
-          notes={this.state.notes}
-          onPressTaskRadioButton={this.onPressTaskRadioButton}
-          saveNote={this.saveNote}
-          deleteNote={this.deleteNote}
-          onMoveEnd={this.onMoveEnd}
-        />
-        <Button onPress={() => {
-          AsyncStorage.clear();
-        }}>clear storage</Button>
-        <Button onPress={() => {
-          console.log(store.getState())
-        }}>log redux state</Button>
-      </SafeAreaView>
-    )
+    if (this.state.isAuthenticated) {
+      return (
+        // <SafeAreaView style={styles.container}>
+        //   <View>
+        //     <DrawerPage />
+        //   </View>
+        // </SafeAreaView>
+
+
+        //OLD
+        <SafeAreaView style={styles.container}>
+          <PagesTabView
+            savePage={this.savePage}
+            currentPage={this.state.currentPage}
+            pages={this.state.pages}
+            onIndexChange={this.onIndexChange}
+            notes={this.state.notes}
+            onPressTaskRadioButton={this.onPressTaskRadioButton}
+            saveNote={this.saveNote}
+            deleteNote={this.deleteNote}
+            onMoveEnd={this.onMoveEnd}
+            deletePage={this.deletePage}
+          />
+          {/* <Button onPress={() => {
+            AsyncStorage.clear();
+          }}>clear storage</Button>
+          <Button onPress={() => {
+            console.log('pages', this.state.pages)
+          }}>log pages</Button> */}
+          <Button
+            onPress={() => this.signOut()}>
+            TEST FIREBASE SIGNOUT
+          </Button>
+          <Button
+            onPress={() => {
+              firebase.database().ref('users/' + 'testman').set({
+                highscore: 8
+              });
+            }}
+          >
+            TEST DB
+          </Button>
+        </SafeAreaView>
+
+      )
+    } else {
+      return (
+        <>
+          <LoginScreen />
+        </>
+
+
+      )
+    }
+
   }
 }
 
