@@ -11,6 +11,7 @@ Functionality
 [] cleanup deleteNote method
 [] Check if I need to add vibration permissions to android manifest.xml
 [] swip list items for more options
+[] On login screen, touchableOpacity not working with absolute positioning
 
 
 Clean Code and extensibility:
@@ -39,6 +40,8 @@ import { Button } from 'react-native-paper';
 import { connect } from 'react-redux';
 import moment from 'moment';
 import { BreadProvider } from "material-bread";
+import { createAppContainer } from 'react-navigation';
+import { createStackNavigator } from 'react-navigation-stack';
 
 import PagesTabView from './components/PagesTabView';
 import DrawerPage from './components/DrawerPage';
@@ -49,6 +52,28 @@ import LoginScreen from './components/auth/LoginScreen'
 import ApiKeys from './constants/ApiKeys'
 import * as firebase from 'firebase';
 
+const LoginNavigator = createStackNavigator({
+  Signup: {
+    screen: SignupScreen,
+    navigationOptions: {
+      header: null,
+    }
+  },
+  Login: {
+    screen: LoginScreen,
+    navigationOptions: {
+      header: null,
+    }
+  },
+  ForgotPassword: {
+    screen: ForgotPasswordScreen,
+    navigationOptions: {
+      header: null,
+    }
+  }
+});
+
+const Login = createAppContainer(LoginNavigator);
 
 
 
@@ -344,7 +369,7 @@ class App extends Component {
     } else {
       return (
         <>
-          <LoginScreen />
+          <Login />
         </>
 
 
