@@ -17,15 +17,11 @@ function AddPageModal({ isAddPageModalOpen, closeAddPageModal, savePage }) {
     closeAddPageModal();
     InteractionManager.runAfterInteractions(() => {
       if (title) {
-        // const timeStamp = new moment().format("YYYY-MM-DD HH:mm:ss");
-        const timeStamp = new moment().format();
-        console.log(typeof timeStamp)
-        console.log(timeStamp)
         const page = {
-          date: timeStamp,
+          date: timeStamp = new moment().format(),
           title: title,
-          key: new moment(timeStamp).format('dhms'),
           notes: [],
+          key: new moment().format('dhms'),
         }
         savePage(page);
       }

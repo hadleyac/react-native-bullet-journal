@@ -94,35 +94,43 @@ class App extends Component {
       isAuthenticated: false,
       currentPage: 0,
       pages: [
-        // {
-        //   title: "First Page",
-        //   key: "first",
-        //   date: new moment(),
-        //   //key needs to contain no spaces in order to work with the TabView
-        //   notes: [0, 1]
-        // }
+        {
+          title: "First Page",
+          key: "first",
+          date: new moment().format(),
+          key: new moment().format('dhms'),
+          notes: [0, 1, 2]
+        }
 
       ],
       notes: {
         //this is an example of a note
         0: {
           type: 'note',
-          content: 'this is a note',
+          content: 'I am a note',
           important: true,
-          inspiration: false
+          inspiration: false,
+          bodyText: 'I can have optional text in the body'
 
 
         },
         //this is an example of a task. There will be more "note" types in the future. 
         1: {
           type: 'task',
-          content: 'this is a task',
+          content: 'I am a task. Tap me to mark complete',
+          complete: false,
+          important: false,
+          inspiration: true
+        },
+        2: {
+          type: 'task',
+          content: 'Long-press and drag to rearrange us!',
           complete: false,
           important: false,
           inspiration: true
         }
       },
-      noteID: 2,
+      noteID: 3,
     }
     //Leaving these here for now, need to research why I'm getting an error when using async with arrow functions
     this.deleteNote = this.deleteNote.bind(this);
@@ -137,6 +145,7 @@ class App extends Component {
   onAuthStateChanged = (user) => {
     this.setState({ isAuthenticationReady: true });
     this.setState({ isAuthenticated: !!user });
+    this.fetchRemoteData()
   }
 
   signOut = () => {
@@ -150,24 +159,28 @@ class App extends Component {
       });
   }
 
-  checkFirstTimeSetup = () => {
-    if (this.state.pages.length === 0) {
-      const timeStamp = new moment();
-      const page = {
-        date: timeStamp,
-        title: timeStamp.format('ddd d/M/YY'),
-        key: timeStamp.format('dhms'),
-        notes: [],
-      }
-      this.savePage(page);
-    }
-  }
+  // checkFirstTimeSetup = () => {
+  //   if (this.state.pages.length === 0) {
+  //     const timeStamp = new moment().format();
+  //     const page = {
+  //       date: timeStamp,
+  //       title: new moment(timeStamp).format('ddd d/M/YY'),
+  //       key: new moment(timeStamp).format('dhms'),
+  //       notes: [],
+  //     }
+  //     this.savePage(page);
+  //   }
+  // }
   savePage = (page) => {
+    console.log(page)
     const editPage = this.props.editPage;
 
     //if editPage is empty, append a new page
     if (Object.keys(editPage).length === 0) {
-      this.setState({ pages: [...this.state.pages, page], currentPage: this.state.pages.length }, () => { this.saveState() })
+      this.setState({ pages: [...this.state.pages, { ...page, notes: [] }], currentPage: this.state.pages.length }, async () => {
+        await this.saveState();
+        this.saveRemoteData();
+      })
     }
     //Otherwise, we are editing an existing page
     else {
@@ -178,7 +191,11 @@ class App extends Component {
         }
       }
       //Set the state, and then reset editPage back to a blank object
-      this.setState({ pages: newPages }, () => { this.props.setEditPage({}); this.saveState(); })
+      this.setState({ pages: newPages }, async () => {
+        this.props.setEditPage({});
+        await this.saveState();
+        this.saveRemoteData();
+      })
     }
   }
 
@@ -192,7 +209,11 @@ class App extends Component {
     newPage.notes = newPageNoteOrder;
     this.setState({
       pages: newPages
-    }, () => this.saveState())
+    }, async () => {
+
+      await this.saveState();
+      this.saveRemoteData();
+    })
   }
   onPressTaskRadioButton = (id) => {
     this.setState({
@@ -203,7 +224,12 @@ class App extends Component {
           complete: !this.state.notes[id].complete
         }
       }
-    }, () => this.saveState())
+    }, async () => {
+
+      await this.saveState()
+      this.saveRemoteData()
+
+    })
   }
 
   saveNote = (note) => {
@@ -218,7 +244,14 @@ class App extends Component {
       const { noteID, pages, currentPage } = this.state;
       const newPages = [...pages];
       const newPage = { ...newPages[currentPage] };
-      newPage.notes = [...newPage.notes, noteID];
+      console.log(newPage.notes)
+
+      //Added this if/else to solve problem of undefined array
+      if (newPage.notes) {
+        newPage.notes = [...newPage.notes, noteID];
+      } else {
+        newPage.notes = [noteID]
+      }
       newPages[currentPage] = newPage;
       this.setState({
         pages: newPages
@@ -226,8 +259,12 @@ class App extends Component {
         //increment noteID
         this.setState({
           noteID: noteID + 1
-          //save to local storage
-        }, () => { this.saveState() })
+        }, async () => {
+          //save to local and remote storage
+          await this.saveState()
+          this.saveRemoteData();
+
+        })
       })
     })
   }
@@ -246,7 +283,12 @@ class App extends Component {
 
     newState.pages = newPages;
     newState.notes = newNotes
-    this.setState(newState, () => this.saveState())
+    this.setState(newState, async () => {
+      //save to local and remote storage
+      await this.saveState()
+      this.saveRemoteData();
+
+    })
   }
 
   //TODO: separate this method into several smaller methods
@@ -285,7 +327,8 @@ class App extends Component {
           await this.deleteNote(notesToDelete[i])
         }
         console.log(this.state.notes)
-        this.saveState();
+        await this.saveState()
+        this.saveRemoteData();
       })
 
     }
@@ -293,15 +336,41 @@ class App extends Component {
   }
 
   async componentDidMount() {
-    await this.getState()
-    this.checkFirstTimeSetup()
+    //get state from remote if online, local storage if offline
+    // await this.getState()
+    // this.checkFirstTimeSetup()
 
   }
   //FIREBASE STORAGE METHODS
-  async fetchData() {
+  async fetchRemoteData() {
     //pages
     //notes
     //nodeID
+    if (this.state.isAuthenticated) {
+      console.log('fetching data')
+      let userID = firebase.auth().currentUser.uid
+      console.log(userID)
+      firebase.database().ref('users/' + userID).on("value", async (snapshot) => {
+
+        //if we get a result, set state and save to local storage
+        if (snapshot.val() !== null) {
+          const { notes, noteID, pages } = snapshot.val();
+          this.setState({ notes: notes, noteID: noteID, pages: pages }, async () => {
+            console.log('fetchRemoteData: state set')
+            console.log('fetchRemoteData: callback saving to local storage')
+
+            //save to local storage
+            await this.saveState()
+
+          })
+        }
+      }, async (error) => {
+        console.log("Error: " + error.code);
+        //save to local storage
+        console.log('fetchRemoteData: callback (fallback) saving to local storage')
+        await this.saveState()
+      });
+    }
 
   }
 
@@ -315,7 +384,7 @@ class App extends Component {
         pages: this.state.pages,
         notes: this.state.notes,
         noteID: this.state.noteID,
-      }).then(err => console.log(err));
+      })
     }
 
   }
@@ -342,12 +411,16 @@ class App extends Component {
 
   async saveState() {
     await this.saveData('appState', this.state)
-    await this.saveRemoteData();
+    console.log('saveState: saved to local storage')
   }
 
   async getState() {
-    const appState = await this.getData('appState')
-    this.setState(appState)
+    // const appState = await this.getData('appState')
+    // this.setState(appState)
+    console.log(this.state.isAuthenticated)
+    if (this.state.isAuthenticated) {
+      // this.fetchRemoteData()
+    }
   }
 
 
@@ -377,18 +450,11 @@ class App extends Component {
             onPress={() => this.signOut()}>
             TEST FIREBASE SIGNOUT
           </Button>
-          <Button
-            onPress={() => {
-              let userID = firebase.auth().currentUser.uid
-              firebase.database().ref('users/' + userID).set({
-                highscore: 8
-              });
-            }}
-          >
-            TEST DB
-          </Button>
           <Button onPress={() => { this.saveRemoteData() }}>
             Save Remote Data
+          </Button>
+          <Button onPress={() => { this.fetchRemoteData() }}>
+            Fetch Remote Data
           </Button>
         </SafeAreaView>
 
