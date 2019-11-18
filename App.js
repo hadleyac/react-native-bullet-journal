@@ -2,6 +2,13 @@
 TODO
 
 Functionality
+[x fix icons
+[] Add db storage
+[] Fix delete
+[] fix notes display
+[] fix text fields on android
+[] fix page insertion index
+
 [] add routing for auth pages
 [] edit notes
 [] fix swipe loading
@@ -22,6 +29,7 @@ Styling
 [] Fix styling for important and inspiration toggles
 [] if note names are too long, they should wrap to the next line
 
+icons: https://materialdesignicons.com/
 
 swipable tabs: https://github.com/react-native-community/react-native-tab-view
 icons: https://material.io/resources/icons/?style=baseline
@@ -42,6 +50,8 @@ import moment from 'moment';
 import { BreadProvider } from "material-bread";
 import { createAppContainer } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
+import ApiKeys from './constants/ApiKeys'
+import * as firebase from 'firebase';
 
 import PagesTabView from './components/PagesTabView';
 import DrawerPage from './components/DrawerPage';
@@ -49,8 +59,7 @@ import SignupScreen from './components/auth/SignupScreen'
 import ForgotPasswordScreen from './components/auth/ForgotPasswordScreen'
 import LoginScreen from './components/auth/LoginScreen'
 
-import ApiKeys from './constants/ApiKeys'
-import * as firebase from 'firebase';
+
 
 const LoginNavigator = createStackNavigator({
   Signup: {
@@ -114,8 +123,6 @@ class App extends Component {
         }
       },
       noteID: 2,
-      pageInsertionIndex: -1,
-
     }
     //Leaving these here for now, need to research why I'm getting an error when using async with arrow functions
     this.deleteNote = this.deleteNote.bind(this);
@@ -289,13 +296,28 @@ class App extends Component {
     await this.getState()
     this.checkFirstTimeSetup()
 
+  }
+  //FIREBASE STORAGE METHODS
+  async fetchData() {
+    //pages
+    //notes
+    //nodeID
 
-    //Firebase experimentation
-    if (this.isAuthenticated) {
-      firebase.database().ref('users/' + 'testman').set({
-        highscore: 8
-      });
+  }
+
+  async saveRemoteData() {
+    //pages
+    //notes
+    //nodeID
+    if (this.state.isAuthenticated) {
+      let userID = firebase.auth().currentUser.uid
+      firebase.database().ref('users/' + userID).set({
+        pages: this.state.pages,
+        notes: this.state.notes,
+        noteID: this.state.noteID,
+      }).then(err => console.log(err));
     }
+
   }
 
   //LOCAL STORAGE METHODS
@@ -319,7 +341,8 @@ class App extends Component {
   }
 
   async saveState() {
-    this.saveData('appState', this.state)
+    await this.saveData('appState', this.state)
+    await this.saveRemoteData();
   }
 
   async getState() {
@@ -356,12 +379,16 @@ class App extends Component {
           </Button>
           <Button
             onPress={() => {
-              firebase.database().ref('users/' + 'testman').set({
+              let userID = firebase.auth().currentUser.uid
+              firebase.database().ref('users/' + userID).set({
                 highscore: 8
               });
             }}
           >
             TEST DB
+          </Button>
+          <Button onPress={() => { this.saveRemoteData() }}>
+            Save Remote Data
           </Button>
         </SafeAreaView>
 
