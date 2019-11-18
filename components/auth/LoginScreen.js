@@ -16,6 +16,7 @@ function LoginScreen(props) {
 
       }, (error) => {
         console.log('fail')
+        console.log(email, password)
         Alert.alert(error.message)
       })
   }

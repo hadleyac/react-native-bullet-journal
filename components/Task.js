@@ -18,7 +18,7 @@ class Task extends PureComponent {
       <List.Item
         title={this.props.content}
         titleStyle={this.props.complete ? styles.complete : styles.none}
-        left={() => <IconButton size={12} icon="lens" disabled />}
+        left={() => <IconButton size={12} icon="checkbox-blank-circle" style={styles.icon} disabled />}
         right={() => <IconButton size={16} icon="delete" onPress={() => { this.props.deleteNote(this.props.noteID) }} />}
       />
     )
@@ -33,7 +33,11 @@ const styles = StyleSheet.create({
     textDecorationLine: 'line-through',
     // flexDirection: 'row'
   },
-  none: {
-    // flexDirection: 'row'
+  icon: {
+    // flex: 1,
+    // display: 'flex',
+    // justifyContent: 'center',
+    // alignItems: 'center',
+    paddingTop: 5
   }
 })

@@ -9,11 +9,12 @@ function AddNoteFAB(props) {
     <Portal>
       <FAB.Group
         open={isOpen}
-        icon={isOpen ? 'today' : 'add'}
+        icon={isOpen ? 'playlist-plus' : 'plus'}
+        // icon='plus'
         actions={[
-          { icon: 'subject', label: 'Page', onPress: props.showAddPageModal },
+          { icon: 'file-document-outline', label: 'Page', onPress: props.showAddPageModal },
           { icon: 'check-circle', label: 'Task', onPress: props.showAddTaskModal },
-          { icon: 'subject', label: 'Note', onPress: props.showAddNoteModal },
+          { icon: 'text', label: 'Note', onPress: props.showAddNoteModal },
         ]}
         onStateChange={({ open }) => toggleOpen(!isOpen)} //refactor?
         onPress={() => {

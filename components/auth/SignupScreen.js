@@ -1,8 +1,8 @@
 import React, { Component, useState } from 'react'
-import { StyleSheet, View, SafeAreaView, KeyboardAvoidingView, Alert, TextInputMa } from 'react-native'
-import { DefaultTheme, Text, TextInput, Button } from 'react-native-paper';
+import { StyleSheet, View, SafeAreaView, KeyboardAvoidingView, Alert } from 'react-native'
+import { DefaultTheme, Text, Button, TextInput } from 'react-native-paper';
 import * as firebase from 'firebase'
-import { TouchableOpacity } from 'react-native-gesture-handler';
+import { TouchableOpacity, ScrollView } from 'react-native-gesture-handler';
 
 function SignupScreen(props) {
   const { navigate } = props.navigation;
@@ -15,6 +15,7 @@ function SignupScreen(props) {
       var errorMessage = error.message;
       console.log(errorCode);
       console.log(errorMessage);
+      console.log(email, password)
       //It might not be wise to give the user access to all the error messages, but I'm leaving it for now since I'm testing
       Alert.alert(errorMessage);
     });
@@ -24,6 +25,9 @@ function SignupScreen(props) {
     <>
       <SafeAreaView style={styles.statusBar} />
       <SafeAreaView style={styles.container} >
+        {/* <KeyboardAvoidingView style={styles.container}> */}
+        {/* <ScrollView> */}
+
         <Text style={{ color: 'white', fontSize: 24, marginBottom: 20 }}>
           Let's Get Going!
       </Text>
@@ -33,7 +37,8 @@ function SignupScreen(props) {
           onChangeText={text => setEmail(text)}
           theme={loginTheme}
           mode='outlined'
-          dense={true}
+          // fontSize={6}
+          // dense={true}
           autoCapitalize='none'
         />
         <TextInput
@@ -42,7 +47,7 @@ function SignupScreen(props) {
           onChangeText={text => setPassword(text)}
           theme={loginTheme}
           mode='outlined'
-          dense='true'
+          // dense='true'
           underlineColor='white'
           secureTextEntry={true}
         />
@@ -64,6 +69,8 @@ function SignupScreen(props) {
             Already have an account? Sign in here
         </Text>
         </TouchableOpacity>
+        {/* </KeyboardAvoidingView> */}
+        {/* </ScrollView> */}
       </SafeAreaView>
     </>
   )
@@ -73,7 +80,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#f50057',
-    display: 'flex',
+    // display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
     // marginTop: -200
@@ -85,7 +92,7 @@ const styles = StyleSheet.create({
   input: {
     width: '80%',
     color: 'white',
-    marginTop: 10
+    marginTop: 10,
   },
   button: {
 

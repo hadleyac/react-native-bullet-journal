@@ -15,7 +15,7 @@ class Note extends PureComponent {
         // description={this.props.bodyText}
         description={() => <Text style={{ color: 'rgba(0,0,0,.54)' }}>{this.props.bodyText}</Text>}
         titleStyle={{ flexWrap: 'wrap', flex: 1 }}
-        left={() => <IconButton size={12} icon="remove" disabled />}
+        left={() => <IconButton size={12} icon="minus" disabled />}
         right={() => <IconButton icon="delete" size={16} onPress={() => { this.props.deleteNote(this.props.noteID) }} />}
       />
     )
