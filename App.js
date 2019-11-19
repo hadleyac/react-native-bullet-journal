@@ -159,18 +159,6 @@ class App extends Component {
       });
   }
 
-  // checkFirstTimeSetup = () => {
-  //   if (this.state.pages.length === 0) {
-  //     const timeStamp = new moment().format();
-  //     const page = {
-  //       date: timeStamp,
-  //       title: new moment(timeStamp).format('ddd d/M/YY'),
-  //       key: new moment(timeStamp).format('dhms'),
-  //       notes: [],
-  //     }
-  //     this.savePage(page);
-  //   }
-  // }
   savePage = (page) => {
     console.log(page)
     const editPage = this.props.editPage;
@@ -188,10 +176,12 @@ class App extends Component {
       for (let i = 0; i < newPages.length; i++) {
         if (newPages[i].key === page.key) {
           newPages[i] = page;
+          console.log('edited page', newPages[i])
         }
       }
       //Set the state, and then reset editPage back to a blank object
       this.setState({ pages: newPages }, async () => {
+        console.log('savePage: saving edited page')
         this.props.setEditPage({});
         await this.saveState();
         this.saveRemoteData();
@@ -336,10 +326,7 @@ class App extends Component {
   }
 
   async componentDidMount() {
-    //get state from remote if online, local storage if offline
     // await this.getState()
-    // this.checkFirstTimeSetup()
-
   }
   //FIREBASE STORAGE METHODS
   async fetchRemoteData() {
@@ -379,6 +366,10 @@ class App extends Component {
     //notes
     //nodeID
     if (this.state.isAuthenticated) {
+      console.log('saveRemoteData: ')
+      console.log(this.state.pages)
+      console.log(this.state.notes)
+      console.log(this.state.noteID)
       let userID = firebase.auth().currentUser.uid
       firebase.database().ref('users/' + userID).set({
         pages: this.state.pages,

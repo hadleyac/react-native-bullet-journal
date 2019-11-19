@@ -17,12 +17,9 @@ function EditPageModal({ setEditPage, isEditPageModalOpen, closeEditPageModal, s
     closeEditPageModal();
     InteractionManager.runAfterInteractions(() => {
       if (title) {
-        const timeStamp = moment(editPage.date);
         const page = {
-          date: timeStamp,
-          title: title,
-          key: timeStamp.format('dhms'),
-          notes: [],
+          ...editPage,
+          title: title
         }
         savePage(page);
       }
