@@ -41,20 +41,16 @@ import {
   StyleSheet,
   AsyncStorage,
   SafeAreaView,
-  View,
-  Text
 } from 'react-native';
 import { Button } from 'react-native-paper';
 import { connect } from 'react-redux';
 import moment from 'moment';
-import { BreadProvider } from "material-bread";
 import { createAppContainer } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
 import ApiKeys from './constants/ApiKeys'
 import * as firebase from 'firebase';
 
 import PagesTabView from './components/PagesTabView';
-import DrawerPage from './components/DrawerPage';
 import SignupScreen from './components/auth/SignupScreen'
 import ForgotPasswordScreen from './components/auth/ForgotPasswordScreen'
 import LoginScreen from './components/auth/LoginScreen'
@@ -111,8 +107,6 @@ class App extends Component {
           important: true,
           inspiration: false,
           bodyText: 'I can have optional text in the body'
-
-
         },
         //this is an example of a task. There will be more "note" types in the future. 
         1: {
@@ -152,6 +146,8 @@ class App extends Component {
     firebase.auth().signOut()
       .then(() => {
         // Sign-out successful.
+        //Clear local storage
+        AsyncStorage.clear()
         console.log('sign out successful')
       }).catch(function (error) {
         // An error happened.
@@ -200,7 +196,6 @@ class App extends Component {
     this.setState({
       pages: newPages
     }, async () => {
-
       await this.saveState();
       this.saveRemoteData();
     })
@@ -215,10 +210,8 @@ class App extends Component {
         }
       }
     }, async () => {
-
       await this.saveState()
       this.saveRemoteData()
-
     })
   }
 
@@ -277,7 +270,6 @@ class App extends Component {
       //save to local and remote storage
       await this.saveState()
       this.saveRemoteData();
-
     })
   }
 
@@ -320,13 +312,11 @@ class App extends Component {
         await this.saveState()
         this.saveRemoteData();
       })
-
     }
-
   }
 
   async componentDidMount() {
-    // await this.getState()
+    await this.getState()
   }
   //FIREBASE STORAGE METHODS
   async fetchRemoteData() {
@@ -455,8 +445,6 @@ class App extends Component {
         <>
           <Login />
         </>
-
-
       )
     }
 
