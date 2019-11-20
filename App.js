@@ -2,14 +2,7 @@
 TODO
 
 Functionality
-[x fix icons
-[] Add db storage
-[] Fix delete
-[] fix notes display
 [] fix text fields on android
-[] fix page insertion index
-
-[] add routing for auth pages
 [] edit notes
 [] fix swipe loading
 [] add time note was created
@@ -140,6 +133,7 @@ class App extends Component {
     this.setState({ isAuthenticationReady: true });
     this.setState({ isAuthenticated: !!user });
     this.fetchRemoteData()
+
   }
 
   signOut = () => {
@@ -324,8 +318,8 @@ class App extends Component {
     //notes
     //nodeID
     if (this.state.isAuthenticated) {
-      console.log('fetching data')
       let userID = firebase.auth().currentUser.uid
+      console.log('fetching data')
       console.log(userID)
       firebase.database().ref('users/' + userID).on("value", async (snapshot) => {
 
@@ -391,8 +385,12 @@ class App extends Component {
   }
 
   async saveState() {
-    await this.saveData('appState', this.state)
-    console.log('saveState: saved to local storage')
+
+    if (this.state.isAuthenticated) {
+      const userID = firebase.auth().currentUser.uid
+      await this.saveData(userID, this.state)
+      console.log('saveState: saved to local storage')
+    }
   }
 
   async getState() {
