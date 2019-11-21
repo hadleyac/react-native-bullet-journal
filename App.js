@@ -132,6 +132,7 @@ class App extends Component {
   onAuthStateChanged = (user) => {
     this.setState({ isAuthenticationReady: true });
     this.setState({ isAuthenticated: !!user });
+    // this.getState()
     this.fetchRemoteData()
 
   }
@@ -141,8 +142,9 @@ class App extends Component {
       .then(() => {
         // Sign-out successful.
         //Clear local storage
-        AsyncStorage.clear()
+        // AsyncStorage.clear()
         console.log('sign out successful')
+        console.log('resetting state')
       }).catch(function (error) {
         // An error happened.
         console.log('error in signout')
@@ -310,13 +312,10 @@ class App extends Component {
   }
 
   async componentDidMount() {
-    await this.getState()
+    // await this.getState()
   }
   //FIREBASE STORAGE METHODS
   async fetchRemoteData() {
-    //pages
-    //notes
-    //nodeID
     if (this.state.isAuthenticated) {
       let userID = firebase.auth().currentUser.uid
       console.log('fetching data')
@@ -331,7 +330,7 @@ class App extends Component {
             console.log('fetchRemoteData: callback saving to local storage')
 
             //save to local storage
-            await this.saveState()
+            // await this.saveState()
 
           })
         }
@@ -339,7 +338,7 @@ class App extends Component {
         console.log("Error: " + error.code);
         //save to local storage
         console.log('fetchRemoteData: callback (fallback) saving to local storage')
-        await this.saveState()
+        // await this.saveState()
       });
     }
 
@@ -385,7 +384,6 @@ class App extends Component {
   }
 
   async saveState() {
-
     if (this.state.isAuthenticated) {
       const userID = firebase.auth().currentUser.uid
       await this.saveData(userID, this.state)
@@ -394,11 +392,12 @@ class App extends Component {
   }
 
   async getState() {
-    // const appState = await this.getData('appState')
-    // this.setState(appState)
-    console.log(this.state.isAuthenticated)
     if (this.state.isAuthenticated) {
-      // this.fetchRemoteData()
+      console.log(this.state.isAuthenticated)
+      const userID = firebase.auth().currentUser.uid
+      const appState = await this.getData(userID)
+      this.setState(appState)
+
     }
   }
 
@@ -419,22 +418,23 @@ class App extends Component {
             onMoveEnd={this.onMoveEnd}
             deletePage={this.deletePage}
           />
+          {/* FOR TESTING */}
           <Button onPress={() => {
             AsyncStorage.clear();
-          }}>clear storage</Button>
-          <Button onPress={() => {
+          }}> </Button>
+          {/* <Button onPress={() => {
             console.log('pages', this.state.pages)
-          }}>log pages</Button>
-          <Button
+          }}>log pages</Button> */}
+          {/* <Button
             onPress={() => this.signOut()}>
             TEST FIREBASE SIGNOUT
-          </Button>
-          <Button onPress={() => { this.saveRemoteData() }}>
+          </Button> */}
+          {/* <Button onPress={() => { this.saveRemoteData() }}>
             Save Remote Data
-          </Button>
-          <Button onPress={() => { this.fetchRemoteData() }}>
+          </Button> */}
+          {/* <Button onPress={() => { this.fetchRemoteData() }}>
             Fetch Remote Data
-          </Button>
+          </Button> */}
         </SafeAreaView>
 
       )
